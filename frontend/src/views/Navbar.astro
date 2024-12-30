@@ -1,7 +1,19 @@
+---
+import {
+	getLangFromUrl,
+	useTranslations,
+	useTranslatedPath,
+} from 'src/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
 <nav id='navbar'>
-	<a href='/' class='nav-link'>Buscador</a>
-	<a href='/quiz' class='nav-link'>Pruebas</a>
-	<a href='/about' class='nav-link'>Más sobre Rugby</a>
+	<a href={translatePath('/')} class='nav-link'>{t('nav.search')}</a>
+	<a href={translatePath('/quiz/')} class='nav-link'>{t('nav.quiz')}</a>
+	<a href={translatePath('/about/')} class='nav-link'>{t('nav.about')}</a>
 </nav>
 
 <style>
