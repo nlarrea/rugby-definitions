@@ -1,5 +1,4 @@
 ---
-import Welcome from '@/views/Welcome.astro';
 import Layout from '@/layouts/Layout.astro';
 import { getI18N } from '@/i18n';
 
@@ -11,5 +10,18 @@ const i18n = getI18N({ currentLocale });
 	title={`${i18n.SEO.TITLE_SEARCH}`}
 	description={`${i18n.SEO.DESCRIPTION_SEARCH}`}
 >
-	<Welcome />
+	<main>
+		<h1>{i18n.SEARCH.TITLE}</h1>
+	</main>
 </Layout>
+
+<style>
+	main {
+		height: calc(100% - 4em);
+	}
+
+	h1 {
+		text-align: center;
+		padding: 1em 0;
+	}
+</style>
