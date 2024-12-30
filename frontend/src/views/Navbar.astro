@@ -1,4 +1,5 @@
 ---
+import LanguagePicker from '@/components/LanguagePicker.astro';
 import {
 	getLangFromUrl,
 	useTranslations,
@@ -14,6 +15,7 @@ const translatePath = useTranslatedPath(lang);
 	<a href={translatePath('/')} class='nav-link'>{t('nav.search')}</a>
 	<a href={translatePath('/examen')} class='nav-link'>{t('nav.quiz')}</a>
 	<a href={translatePath('/mas-rugby')} class='nav-link'>{t('nav.about')}</a>
+	<LanguagePicker />
 </nav>
 
 <style>
