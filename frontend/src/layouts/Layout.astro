@@ -1,0 +1,90 @@
+---
+import Navbar from '@views/Navbar.astro';
+import { colors } from '@constants/colors';
+
+const { darkBg, darkText, darkAccent, lightBg, lightText, lightAccent } =
+	colors;
+
+interface Map {
+	[key: string]: string | undefined;
+}
+
+interface Props {
+	titles: Map;
+	descriptions: Map;
+}
+
+const { currentLocale } = Astro;
+const { titles, descriptions } = Astro.props;
+
+const lang = currentLocale != null ? currentLocale : 'es';
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset='UTF-8' />
+		<meta
+			name='description'
+			content={Object.keys(descriptions).includes(lang)
+				? descriptions[lang]
+				: descriptions['es']}
+		/>
+		<meta name='viewport' content='width=device-width' />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='generator' content={Astro.generator} />
+		<title>{titles[lang]}</title>
+		<link rel='preconnect' href='https://fonts.googleapis.com' />
+		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+		<link
+			href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Tomorrow:wght@700&display=swap'
+			rel='stylesheet'
+		/>
+	</head>
+	<body>
+		<Navbar />
+		<slot />
+	</body>
+</html>
+
+<style
+	is:global
+	define:vars={{
+		darkBg,
+		darkText,
+		darkAccent,
+		lightBg,
+		lightText,
+		lightAccent,
+	}}
+>
+	:root {
+		--dark-bg: var(--darkBg);
+		--dark-text: var(--darkText);
+		--dark-accent: var(--darkAccent);
+		--light-bg: var(--lightBg);
+		--light-text: var(--lightText);
+		--light-accent: var(--lightAccent);
+		color-scheme: light dark;
+		accent-color: light-dark(var(--light-accent), var(--dark-accent));
+	}
+
+	html,
+	body {
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		height: 100%;
+
+		color: light-dark(var(--light-text), var(--dark-text));
+		background-color: light-dark(var(--light-bg), var(--dark-bg));
+
+		font-family: 'Poppins', system-ui, sans-serif;
+	}
+
+	h1 {
+		font-family: 'Tomorrow', serif;
+		font-weight: 700;
+		margin: 0;
+	}
+</style>
