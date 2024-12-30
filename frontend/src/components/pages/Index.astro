@@ -1,19 +1,10 @@
 ---
-import Welcome from '@views/Welcome.astro';
-import Layout from '@layouts/Layout.astro';
+import Welcome from '@/views/Welcome.astro';
+import Layout from '@/layouts/Layout.astro';
 import { getI18N } from '@/i18n';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-
-const titles = {
-	es: 'Definiciones de Rugby | Busca la definición que siempre se te olvida',
-	en: 'Rugby Definitions | Look up the definition you keep forgetting',
-};
-const descriptions = {
-	es: 'Busca y aprende las definiciones oficiales de Rugby. ¡Conviértete en el mejor Rugger!',
-	en: 'Find and learn the official Rugby definitions. Become the best Rugger!',
-};
 ---
 
 <Layout
