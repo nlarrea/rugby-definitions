@@ -5,6 +5,7 @@ import {
 	useTranslatedPath,
 	getLangFromUrl,
 } from '@/i18n/utils';
+import ChevronIcon from '@/components/icons/Chevron.astro';
 
 const route = getRouteFromUrl(Astro.url);
 const lang = getLangFromUrl(Astro.url);
@@ -16,28 +17,123 @@ const otherLocales = Object.values(Languages).filter(
 );
 ---
 
-<div>
-	<div>
-		<button>
-			<currentLocaleData.flag />
-			{currentLocaleData.name}
-		</button>
-		<ul>
-			{
-				otherLocales.map((locale) => (
-					<li>
-						<a
-							href={translatePath(
-								`/${route ? route : ''}`,
-								locale.code
-							)}
-						>
-							<locale.flag />
-							{locale.name}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</div>
+<div id='lang-picker'>
+	<!-- Dropdown trigger -->
+	<button
+		type='button'
+		aria-expanded='true'
+		aria-haspopup='true'
+		class='drop-btn'
+	>
+		<currentLocaleData.flag />
+		{currentLocaleData.name}
+		<ChevronIcon />
+	</button>
+	<!-- Dropdown content -->
+	<ul class='dropdown-content'>
+		{
+			otherLocales.map((locale) => (
+				<li>
+					<a
+						href={translatePath(
+							`/${route ? route : ''}`,
+							locale.code
+						)}
+					>
+						<locale.flag />
+						{locale.name}
+					</a>
+				</li>
+			))
+		}
+	</ul>
 </div>
+
+<style>
+	#lang-picker {
+		width: 155px;
+		color: light-dark(var(--light-text), var(--dark-text));
+		font-weight: 500;
+
+		.drop-btn {
+			padding: 0.5em 1em;
+			overflow: hidden;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5em;
+
+			border-color: transparent;
+			border-radius: 0.5em;
+
+			font-size: 0.9rem;
+			font-weight: 500;
+
+			transition: all 0.3s;
+
+			/* Important for vertical align on mobile phones */
+			font-family: inherit;
+			margin: 0;
+
+			svg {
+				width: 24px;
+				aspect-ratio: 4/3;
+			}
+		}
+
+		&:hover .drop-btn {
+			background-color: light-dark(
+				var(--light-accent),
+				var(--dark-accent)
+			);
+		}
+
+		.dropdown-content {
+			margin: 0;
+			padding: 0.5em 1em;
+			display: none;
+			position: absolute;
+			background-color: light-dark(
+				hsl(from var(--light-bg) h s calc(l - 5)),
+				hsl(from var(--dark-bg) h s calc(l - 5))
+			);
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+
+			li {
+				padding: 0.5em 1em;
+				list-style: none;
+
+				a {
+					color: inherit;
+					text-decoration: none;
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 0.5em;
+
+					font-size: 0.9rem;
+
+					svg {
+						width: 24px;
+						aspect-ratio: 4/3;
+					}
+				}
+			}
+		}
+
+		&:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown-content li:hover {
+			background-color: light-dark(
+				hsl(from var(--light-bg) h s calc(l - 2)),
+				hsl(from var(--dark-bg) h s calc(l - 2))
+			);
+		}
+	}
+</style>
