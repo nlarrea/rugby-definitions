@@ -1,6 +1,8 @@
 ---
-import Navbar from '@views/Navbar.astro';
+import { getLangFromUrl } from 'src/i18n/utils';
 import { colors } from '@constants/colors';
+import LanguagePicker from '@components/LanguagePicker.astro';
+import Navbar from '@views/Navbar.astro';
 
 const { darkBg, darkText, darkAccent, lightBg, lightText, lightAccent } =
 	colors;
@@ -14,10 +16,9 @@ interface Props {
 	descriptions: Map;
 }
 
-const { currentLocale } = Astro;
 const { titles, descriptions } = Astro.props;
 
-const lang = currentLocale != null ? currentLocale : 'es';
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <!doctype html>
@@ -44,6 +45,7 @@ const lang = currentLocale != null ? currentLocale : 'es';
 	<body>
 		<Navbar />
 		<slot />
+		<footer><LanguagePicker /></footer>
 	</body>
 </html>
 
