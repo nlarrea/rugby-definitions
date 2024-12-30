@@ -7,16 +7,12 @@ import Navbar from '@views/Navbar.astro';
 const { darkBg, darkText, darkAccent, lightBg, lightText, lightAccent } =
 	colors;
 
-interface Map {
-	[key: string]: string | undefined;
-}
-
 interface Props {
-	titles: Map;
-	descriptions: Map;
+	title: string;
+	description: string;
 }
 
-const { titles, descriptions } = Astro.props;
+const { title, description } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 ---
@@ -25,16 +21,11 @@ const lang = getLangFromUrl(Astro.url);
 <html lang={lang}>
 	<head>
 		<meta charset='UTF-8' />
-		<meta
-			name='description'
-			content={Object.keys(descriptions).includes(lang)
-				? descriptions[lang]
-				: descriptions['es']}
-		/>
+		<meta name='description' content={description} />
 		<meta name='viewport' content='width=device-width' />
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta name='generator' content={Astro.generator} />
-		<title>{titles[lang]}</title>
+		<title>{title}</title>
 		<link rel='preconnect' href='https://fonts.googleapis.com' />
 		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
 		<link

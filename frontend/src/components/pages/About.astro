@@ -1,14 +1,12 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import { getI18N } from '@/i18n';
 
-const titles = {
-	es: 'Más sobre Rugby | Encuentra información en las webs oficiales',
-	en: 'More about Rugby | Find information on official websites',
-};
-const descriptions = {
-	es: 'Encuentra mucha más información en las páginas oficiales de la World Rugby para estar siempre actualizad@.',
-	en: 'Find much more information on the official World Rugby websites to stay up to date.',
-};
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 ---
 
-<Layout titles={titles} descriptions={descriptions} />
+<Layout
+	title={`${i18n.SEO.TITLE_ABOUT}`}
+	description={i18n.SEO.DESCRIPTION_ABOUT}
+/>

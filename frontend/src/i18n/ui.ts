@@ -1,14 +1,26 @@
-export const languages = {
-	es: 'Español',
-	en: 'English',
-};
+import SpainFlag from '@/components/flags/Spain.astro';
+import UnitedStatesFlag from '@/components/flags/UnitedStates.astro';
 
-export const defaultLang = 'es';
+export const Languages: Record<
+	string,
+	{ code: string; name: string; flag: typeof SpainFlag }
+> = {
+	es: {
+		code: 'es',
+		name: 'Español',
+		flag: SpainFlag,
+	},
+	en: {
+		code: 'en',
+		name: 'English',
+		flag: UnitedStatesFlag,
+	},
+};
 
 export const ui = {
 	es: {
 		'nav.search': 'Buscador',
-		'nav.quiz': 'Prueba',
+		'nav.quiz': 'Examen',
 		'nav.about': 'Más sobre Rugby',
 	},
 	en: {
@@ -18,15 +30,16 @@ export const ui = {
 	},
 } as const;
 
+export const defaultLang = 'es';
 export const showDefaultLang = false;
 
 export const routes = {
 	es: {
-		'quiz': 'examen',
-		'about': 'mas-rugby',
+		examen: 'examen',
+		'mas-rugby': 'mas-rugby',
 	},
 	en: {
-		'quiz': 'quiz',
-		'about': 'more-rugby',
+		examen: 'quiz',
+		'mas-rugby': 'more-rugby',
 	},
 };

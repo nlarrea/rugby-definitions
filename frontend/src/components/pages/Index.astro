@@ -1,6 +1,10 @@
 ---
 import Welcome from '@views/Welcome.astro';
 import Layout from '@layouts/Layout.astro';
+import { getI18N } from '@/i18n';
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 
 const titles = {
 	es: 'Definiciones de Rugby | Busca la definición que siempre se te olvida',
@@ -12,6 +16,9 @@ const descriptions = {
 };
 ---
 
-<Layout titles={titles} descriptions={descriptions}>
+<Layout
+	title={`${i18n.SEO.TITLE_SEARCH}`}
+	description={`${i18n.SEO.DESCRIPTION_SEARCH}`}
+>
 	<Welcome />
 </Layout>
