@@ -1,0 +1,17 @@
+---
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+
+const titles = {
+	es: 'Definiciones de Rugby | Busca la definición que siempre se te olvida',
+	en: 'Rugby Definitions | Look up the definition you keep forgetting',
+};
+const descriptions = {
+	es: 'Busca y aprende las definiciones oficiales de Rugby. ¡Conviértete en el mejor Rugger!',
+	en: 'Find and learn the official Rugby definitions. Become the best Rugger!',
+};
+---
+
+<Layout titles={titles} descriptions={descriptions}>
+	<Welcome />
+</Layout>

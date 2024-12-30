@@ -1,0 +1,53 @@
+<nav id='navbar'>
+	<a href='/' class='nav-link'>Buscador</a>
+	<a href='/quiz' class='nav-link'>Pruebas</a>
+	<a href='/about' class='nav-link'>Más sobre Rugby</a>
+</nav>
+
+<style>
+	#navbar {
+		width: fit-content;
+		height: 4em;
+		padding: 0 3em;
+		margin-inline: auto;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 3em;
+
+		position: sticky;
+		top: 0;
+
+		background-color: light-dark(
+			hsl(from var(--light-bg) h s calc(l - 10)),
+			hsl(from var(--dark-bg) h s calc(l - 10))
+		);
+		border-radius: 0 0 1.5em 1.5em;
+
+		a.nav-link {
+			color: inherit;
+			text-decoration: none;
+			transition: all 0.3s;
+			font-weight: 500;
+
+			&:hover,
+			&:focus,
+			&.active-nav {
+				color: light-dark(var(--light-accent), var(--dark-accent));
+			}
+		}
+	}
+</style>
+
+<script>
+	const nav = document.querySelector('#navbar');
+	const navLinks = nav?.querySelectorAll('a');
+	const currentUrl = window.location.href;
+
+	navLinks?.forEach((link) => {
+		if (link.href === currentUrl) {
+			link.classList.add('active-nav');
+		}
+	});
+</script>
