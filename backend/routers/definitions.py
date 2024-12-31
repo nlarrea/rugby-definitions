@@ -9,7 +9,7 @@ from db.client import db_client
 from db.models.definition import DefinitionGroup, Definition
 
 
-router = APIRouter(tags=["Definitions"])
+router = APIRouter(prefix="/definitions", tags=["Definitions"])
 
 
 def search_definition_group_by_field(
@@ -137,7 +137,50 @@ def search_definitions_by_field(
         return []  # Not found
 
 
-@router.get("/definitions", response_model=list[dict])
+def search_definitions_by_tag(tag: str, lang: str = "es") -> list[Definition]:
+    """Gets a tag value and returns all the definitions that contain that
+    specific tag value.
+
+    Parameters
+    ----------
+    tag : str
+        The tag value that has to be found.
+    lang : str, optional
+        The language in which the definitions are going to be returned, by
+        default "es".
+
+    Returns
+    -------
+    list[Definition]
+        A list of definitions that contain the requested tag.
+    """
+
+    try:
+        definitions = list(
+            db_client[lang].aggregate(
+                [
+                    {"$unwind": "$definitions"},
+                    {"$match": {"definitions.tags": tag.lower()}},
+                    {
+                        "$project": {
+                            "_id": 0,
+                            "definitions.name": 1,
+                            "definitions.definition": 1,
+                            "definitions.tags": 1,
+                        }
+                    },
+                ]
+            )
+        )
+
+        found_defs = definitions_schema(definitions)
+        return [Definition(**def_) for def_ in found_defs]
+
+    except:
+        return []
+
+
+@router.get("/", response_model=list[dict])
 async def get_definitions(lang: str = "es"):
     """Gets all the definition groups and returns them in a list.
 
@@ -158,9 +201,7 @@ async def get_definitions(lang: str = "es"):
     return definition_groups_schema(definitions)
 
 
-@router.get(
-    "/definitions/letter/{letter}", response_model=DefinitionGroup | dict
-)
+@router.get("/letter/{letter}", response_model=DefinitionGroup | dict)
 async def get_definitions_by_letter(letter: str, lang: str = "es"):
     """Gets a letter and returns the DefinitionGroup of that specific letter.
 
@@ -198,7 +239,44 @@ async def get_definitions_by_letter(letter: str, lang: str = "es"):
     )
 
 
-@router.get("/definitions/search", response_model=list[Definition] | list)
+@router.get("/tag/{tag}", response_model=list)
+async def get_definitions_by_tag(tag: str, lang: str = "es"):
+    """Gets a tag name and searches for all the definitions that contain that
+    specific tag.
+
+    Parameters
+    ----------
+    tag : str
+        The tag that has to be found.
+    lang : str, optional
+        The language in which the definition is going to be found, by default
+        "es".
+
+    Returns
+    -------
+    list[Definition]
+        A list containing all the definitions that have the requested tag.
+
+    Raises
+    ------
+    HTTPException
+        If no definitions are found, it raises a 404 error.
+    """
+
+    definitions = search_definitions_by_tag(tag, lang)
+
+    if definitions:
+        return definitions
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail={
+            "message": f"There are not definitions containing '{tag}' tag."
+        },
+    )
+
+
+@router.get("/search", response_model=list[Definition] | list)
 async def search_definitions(word: str, lang: str = "es"):
     """Gets a word to find all definitions that contain that word (only in
     "definition" field).
@@ -227,8 +305,8 @@ async def search_definitions(word: str, lang: str = "es"):
     )
 
 
-@router.get("/definitions/{name}", response_model=list)
-async def get_definition_by_name(name: str, lang: str = "es"):
+@router.get("/{name}", response_model=list)
+async def get_definitions_by_name(name: str, lang: str = "es"):
     """Gets the name or part of the name of a definition and returns the
     definitions that match the name (only in "name" field).
 
