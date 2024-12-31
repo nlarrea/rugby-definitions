@@ -9,6 +9,16 @@
 	},
 	"SEARCH": {
 		"TITLE": "Definiciones de Rugby",
-		"DESCRIPTION": "¡Encuentra las definiciones que quieres utilizando el buscador de definiciones!"
+		"DESCRIPTION": "¡Encuentra las definiciones que quieres utilizando el buscador de definiciones!",
+		"DISPLAY": {
+			"LOADING": "Cargando...",
+			"NOT_FOUND": "No se han encontrado definiciones."
+		},
+		"FORM": {
+			"TITLE": "Selecciona cómo quieres realizar la búsqueda",
+			"FILTER_1": "Por nombre",
+			"FILTER_2": "Por definición",
+			"FILTER_3": "Por primera letra"
+		}
 	}
 }

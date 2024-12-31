@@ -4,7 +4,7 @@ import DefinitionService from '@/services/definitions';
 
 import { useEffect, useState } from 'react';
 
-const DefDisplay = ({ lang, tags, loader }) => {
+const DefDisplay = ({ lang, i18n, tags, loader }) => {
 	const [data, setData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedFilter, setSelectedFilter] = useState('name');
@@ -60,13 +60,16 @@ const DefDisplay = ({ lang, tags, loader }) => {
 		<article id='definition-display'>
 			<DefSearcher
 				lang={lang}
+				i18n={i18n}
 				inputValue={inputValue}
 				handleFilterChange={setSelectedFilter}
 				handleInputChange={setInputValue}
 			/>
 
 			{isLoading ? (
-				<span className='data-loader'>{loader} Cargando...</span>
+				<span className='data-loader'>
+					{loader} {i18n.SEARCH.DISPLAY.LOADING}
+				</span>
 			) : (
 				<main id='found-definitions-display'>
 					{Object.keys(data).length > 0 ? (
@@ -99,7 +102,7 @@ const DefDisplay = ({ lang, tags, loader }) => {
 						)
 					) : (
 						// If no data is found
-						<p>No se han encontrado definiciones.</p>
+						<p>{i18n.SEARCH.DISPLAY.NOT_FOUND}</p>
 					)}
 				</main>
 			)}

@@ -26,7 +26,7 @@ const data: DefinitionGroup[] = await response.json();
 	</header>
 
 	<!-- @ts-ignore -->
-	<DefDisplay lang={currentLocale} client:only>
+	<DefDisplay lang={currentLocale} i18n={i18n} client:only>
 		<TagsIcon slot='tags' />
 		<Loader slot='loader' />
 	</DefDisplay>
