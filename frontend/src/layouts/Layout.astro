@@ -34,7 +34,9 @@ const lang = getLangFromUrl(Astro.url);
 	</head>
 	<body>
 		<Navbar />
-		<slot />
+		<main id='container'>
+			<slot />
+		</main>
 	</body>
 </html>
 
@@ -56,6 +58,7 @@ const lang = getLangFromUrl(Astro.url);
 		--light-bg: var(--lightBg);
 		--light-text: var(--lightText);
 		--light-accent: var(--lightAccent);
+		--app-max-width: 700px;
 		color-scheme: light dark;
 		accent-color: light-dark(var(--light-accent), var(--dark-accent));
 	}
@@ -78,5 +81,11 @@ const lang = getLangFromUrl(Astro.url);
 		font-family: 'Tomorrow', serif;
 		font-weight: 700;
 		margin: 0;
+	}
+
+	main#container {
+		width: min(100%, var(--app-max-width));
+		height: calc(100% - 4em);
+		margin-inline: auto;
 	}
 </style>
