@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import DefDisplay from '@/components/views/DefDisplay.astro';
+import DefDisplay from '../views/DefDisplay';
+import TagsIcon from '../icons/Tags.astro';
 import { getI18N } from '@/i18n';
 import type { DefinitionGroup } from '@/interfaces/definitions';
 
@@ -22,9 +23,11 @@ const data: DefinitionGroup[] = await response.json();
 		<h1>{i18n.SEARCH.TITLE}</h1>
 		<p>{i18n.SEARCH.DESCRIPTION}</p>
 	</header>
-	<!-- TODO: formulario para seleccionar el método de búsqueda
-		 y el input para introducir letras / palabras / ... -->
-	<DefDisplay data={data} />
+
+	<!-- @ts-ignore -->
+	<DefDisplay lang={currentLocale} client:only>
+		<TagsIcon slot='tags' />
+	</DefDisplay>
 </Layout>
 
 <style>
