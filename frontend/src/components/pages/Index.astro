@@ -4,16 +4,9 @@ import DefDisplay from '@/components/views/DefDisplay';
 import TagsIcon from '@/components/icons/Tags.astro';
 import Loader from '@/components/Loader.astro';
 import { getI18N } from '@/i18n';
-import type { DefinitionGroup } from '@/interfaces/definitions';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-
-// Fetch data from API
-const response = await fetch(
-	`http://127.0.0.1:8000/definitions?lang=${currentLocale}`
-);
-const data: DefinitionGroup[] = await response.json();
 ---
 
 <Layout
