@@ -15,7 +15,7 @@ const DefSearcher = ({
 							id='name'
 							value='name'
 							defaultChecked
-							onClick={handleFilterChange}
+							onClick={(e) => handleFilterChange(e.target.value)}
 						/>
 						<span>Por nombre</span>
 					</label>
@@ -25,7 +25,7 @@ const DefSearcher = ({
 							name='filter'
 							id='definition'
 							value='definition'
-							onClick={handleFilterChange}
+							onClick={(e) => handleFilterChange(e.target.value)}
 						/>
 						<span>Por definición</span>
 					</label>
@@ -35,7 +35,7 @@ const DefSearcher = ({
 							name='filter'
 							id='letter'
 							value='letter'
-							onClick={handleFilterChange}
+							onClick={(e) => handleFilterChange(e.target.value)}
 						/>
 						<span>Por letra</span>
 					</label>
@@ -48,7 +48,7 @@ const DefSearcher = ({
 					name='search-input'
 					id='search-input'
 					value={inputValue}
-					onChange={handleInputChange}
+					onChange={(e) => handleInputChange(e.target.value)}
 				/>
 			</section>
 		</form>

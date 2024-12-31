@@ -1,22 +1,14 @@
-import '../../styles/defDisplay.css';
+import '@/styles/defDisplay.css';
 import DefSearcher from './DefSearcher.jsx';
 import DefinitionService from '@/services/definitions';
 
 import { useEffect, useState } from 'react';
 
-const DefDisplay = ({ lang, tags }) => {
+const DefDisplay = ({ lang, tags, loader }) => {
 	const [data, setData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedFilter, setSelectedFilter] = useState('name');
 	const [inputValue, setInputValue] = useState('');
-
-	const handleFilterChange = (event) => {
-		setSelectedFilter(event.target.value);
-	};
-
-	const handleInputChange = async (event) => {
-		setInputValue(event.target.value);
-	};
 
 	const getDefinitionsData = async (callback, params) => {
 		const response = await callback(...params);
@@ -26,10 +18,6 @@ const DefDisplay = ({ lang, tags }) => {
 
 		setIsLoading(false);
 	};
-
-	useEffect(() => {
-		console.log(data);
-	}, [data]);
 
 	/**
 	 * Call the API when the page is opened.
@@ -44,6 +32,8 @@ const DefDisplay = ({ lang, tags }) => {
 	 * Call the API again when one of the input values changes.
 	 */
 	useEffect(() => {
+		setIsLoading(true);
+
 		setTimeout(() => {
 			if (inputValue === '') {
 				getDefinitionsData(DefinitionService.getDefinitions, [lang]);
@@ -63,7 +53,7 @@ const DefDisplay = ({ lang, tags }) => {
 					lang,
 				]);
 			}
-		}, 1000);
+		}, 500);
 	}, [selectedFilter, inputValue]);
 
 	return (
@@ -71,42 +61,48 @@ const DefDisplay = ({ lang, tags }) => {
 			<DefSearcher
 				lang={lang}
 				inputValue={inputValue}
-				handleFilterChange={handleFilterChange}
-				handleInputChange={handleInputChange}
+				handleFilterChange={setSelectedFilter}
+				handleInputChange={setInputValue}
 			/>
 
-			<main id='found-definitions-display'>
-				{Object.keys(data).length > 0 ? (
-					// If there is data
-					Object.keys(data[0]).includes('letter') ? (
-						// DefinitionGroup[]
-						data.map((defGroup) => (
-							<section key={defGroup.letter}>
-								<h3 id={defGroup.letter}>{defGroup.letter}</h3>
-								{defGroup.definitions.map((def, index) => (
-									<Definition
-										key={`${def.name}-${index}`}
-										def={def}
-										tagIcon={tags}
-									/>
-								))}
-							</section>
-						))
+			{isLoading ? (
+				<span className='data-loader'>{loader} Cargando...</span>
+			) : (
+				<main id='found-definitions-display'>
+					{Object.keys(data).length > 0 ? (
+						// If there is data
+						Object.keys(data[0]).includes('letter') ? (
+							// DefinitionGroup[]
+							data.map((defGroup) => (
+								<section key={defGroup.letter}>
+									<h3 id={defGroup.letter}>
+										{defGroup.letter}
+									</h3>
+									{defGroup.definitions.map((def, index) => (
+										<Definition
+											key={`${def.name}-${index}`}
+											def={def}
+											tagIcon={tags}
+										/>
+									))}
+								</section>
+							))
+						) : (
+							// Definition[]
+							data.map((def, index) => (
+								<Definition
+									key={`${def.name}-${index}`}
+									def={def}
+									tagIcon={tags}
+								/>
+							))
+						)
 					) : (
-						// Definition[]
-						data.map((def, index) => (
-							<Definition
-								key={`${def.name}-${index}`}
-								def={def}
-								tagIcon={tags}
-							/>
-						))
-					)
-				) : (
-					// If no data is found
-					<p>No se han encontrado definiciones.</p>
-				)}
-			</main>
+						// If no data is found
+						<p>No se han encontrado definiciones.</p>
+					)}
+				</main>
+			)}
 		</article>
 	);
 };

@@ -1,7 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import DefDisplay from '../views/DefDisplay';
-import TagsIcon from '../icons/Tags.astro';
+import DefDisplay from '@/components/views/DefDisplay';
+import TagsIcon from '@/components/icons/Tags.astro';
+import Loader from '@/components/Loader.astro';
 import { getI18N } from '@/i18n';
 import type { DefinitionGroup } from '@/interfaces/definitions';
 
@@ -27,6 +28,7 @@ const data: DefinitionGroup[] = await response.json();
 	<!-- @ts-ignore -->
 	<DefDisplay lang={currentLocale} client:only>
 		<TagsIcon slot='tags' />
+		<Loader slot='loader' />
 	</DefDisplay>
 </Layout>
 
