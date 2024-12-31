@@ -11,7 +11,10 @@ const i18n = getI18N({ currentLocale });
 	description={`${i18n.SEO.DESCRIPTION_SEARCH}`}
 >
 	<main>
-		<h1>{i18n.SEARCH.TITLE}</h1>
+		<header>
+			<h1>{i18n.SEARCH.TITLE}</h1>
+			<p>{i18n.SEARCH.DESCRIPTION}</p>
+		</header>
 	</main>
 </Layout>
 
@@ -20,8 +23,12 @@ const i18n = getI18N({ currentLocale });
 		height: calc(100% - 4em);
 	}
 
-	h1 {
-		text-align: center;
+	header {
 		padding: 1em 0;
+
+		h1,
+		p {
+			text-align: center;
+		}
 	}
 </style>
