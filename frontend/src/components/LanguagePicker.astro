@@ -6,6 +6,7 @@ import {
 	getLangFromUrl,
 } from '@/i18n/utils';
 import ChevronIcon from '@/components/icons/Chevron.astro';
+import LangIcon from '@/components/icons/Language.astro';
 
 const route = getRouteFromUrl(Astro.url);
 const lang = getLangFromUrl(Astro.url);
@@ -25,8 +26,8 @@ const otherLocales = Object.values(Languages).filter(
 		aria-haspopup='true'
 		class='drop-btn'
 	>
-		<currentLocaleData.flag />
-		{currentLocaleData.name}
+		<LangIcon />
+		{currentLocaleData.code.toUpperCase()}
 		<ChevronIcon />
 	</button>
 	<!-- Dropdown content -->
@@ -40,7 +41,6 @@ const otherLocales = Object.values(Languages).filter(
 							locale.code
 						)}
 					>
-						<locale.flag />
 						{locale.name}
 					</a>
 				</li>
@@ -51,7 +51,6 @@ const otherLocales = Object.values(Languages).filter(
 
 <style>
 	#lang-picker {
-		width: 155px;
 		color: light-dark(var(--light-text), var(--dark-text));
 		font-weight: 500;
 
@@ -64,7 +63,8 @@ const otherLocales = Object.values(Languages).filter(
 			justify-content: center;
 			gap: 0.5em;
 
-			background-color: light-dark(var(--light-bg), var(--dark-bg));
+			/* background-color: light-dark(var(--light-bg), var(--dark-bg)); */
+			background-color: transparent;
 			border-color: transparent;
 			border-radius: 0.5em;
 
@@ -78,50 +78,43 @@ const otherLocales = Object.values(Languages).filter(
 			margin: 0;
 
 			svg {
-				width: 24px;
-				aspect-ratio: 4/3;
+				width: 1.2em;
+				aspect-ratio: 1/1;
 			}
 		}
 
 		&:hover .drop-btn {
-			background-color: light-dark(
-				var(--light-accent),
-				var(--dark-accent)
-			);
+			background-color: light-dark(var(--light-bg), var(--dark-bg));
 		}
 
 		.dropdown-content {
-			margin: 0;
+			min-width: 100px;
 			padding: 0.5em 1em;
+			margin: 0;
+
 			display: none;
 			position: absolute;
+			z-index: 2;
+
 			background-color: light-dark(
 				hsl(from var(--light-bg) h s calc(l - 5)),
 				hsl(from var(--dark-bg) h s calc(l - 5))
 			);
-			min-width: 160px;
 			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-			z-index: 1;
 
 			li {
-				padding: 0.5em 1em;
 				list-style: none;
 
 				a {
+					padding: 0.5em 1em;
 					color: inherit;
 					text-decoration: none;
 
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					gap: 0.5em;
 
 					font-size: 0.9rem;
-
-					svg {
-						width: 24px;
-						aspect-ratio: 4/3;
-					}
 				}
 			}
 		}
@@ -131,9 +124,13 @@ const otherLocales = Object.values(Languages).filter(
 		}
 
 		.dropdown-content li:hover {
-			background-color: light-dark(
+			/* background-color: light-dark(
 				hsl(from var(--light-bg) h s calc(l - 2)),
 				hsl(from var(--dark-bg) h s calc(l - 2))
+			); */
+			background-color: light-dark(
+				var(--light-accent),
+				var(--dark-accent)
 			);
 		}
 	}
