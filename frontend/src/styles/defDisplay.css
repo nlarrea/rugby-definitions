@@ -41,3 +41,16 @@ article.definition {
 		margin-bottom: 2em;
 	}
 }
+
+span.data-loader {
+	margin-top: 2em;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+}
+
+#found-definitions-display {
+	margin-top: 2em;
+}
