@@ -1,19 +1,11 @@
-import SpainFlag from '@/components/flags/Spain.astro';
-import UnitedStatesFlag from '@/components/flags/UnitedStates.astro';
-
-export const Languages: Record<
-	string,
-	{ code: string; name: string; flag: typeof SpainFlag }
-> = {
+export const Languages: Record<string, { code: string; name: string }> = {
 	es: {
 		code: 'es',
 		name: 'Español',
-		flag: SpainFlag,
 	},
 	en: {
 		code: 'en',
 		name: 'English',
-		flag: UnitedStatesFlag,
 	},
 };
 
