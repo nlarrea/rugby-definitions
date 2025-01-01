@@ -13,8 +13,13 @@ const getDefinitionsByLetter = async (allDefinitions, letter) => {
 };
 
 const getDefinitionsByTag = async (allDefinitions, tag) => {
-	const definitions = allDefinitions.filter((defGroup) =>
-		defGroup.descriptions.tags.includes(tag)
+	const definitions = [];
+	allDefinitions.forEach((defGroup) =>
+		defGroup.definitions.forEach((def) => {
+			if (def.tags.includes(tag)) {
+				definitions.push(def);
+			}
+		})
 	);
 	return definitions;
 };
