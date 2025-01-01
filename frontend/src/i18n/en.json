@@ -19,7 +19,9 @@
 			"FILTER_1": "By name",
 			"FILTER_2": "By definition",
 			"FILTER_3": "By first letter",
-			"FILTER_4": "By tag"
+			"FILTER_4": "By tag",
+			"INPUT_PLACEHOLDER": "Tackle",
+			"INPUT_PLACEHOLDER_LETTER": "A"
 		}
 	}
 }

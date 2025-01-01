@@ -19,7 +19,9 @@
 			"FILTER_1": "Por nombre",
 			"FILTER_2": "Por definición",
 			"FILTER_3": "Por primera letra",
-			"FILTER_4": "Por etiqueta"
+			"FILTER_4": "Por etiqueta",
+			"INPUT_PLACEHOLDER": "Placaje",
+			"INPUT_PLACEHOLDER_LETTER": "A"
 		}
 	}
 }
