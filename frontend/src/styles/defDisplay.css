@@ -25,7 +25,10 @@ span.definition-tag,
 button.definition-tag {
 	padding: 0.25em 0.75em;
 
+	font-family: 'JetBrains Mono', serif;
 	font-size: 0.75em;
+	font-weight: 400;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -33,7 +36,7 @@ button.definition-tag {
 
 	transition: all 0.3s;
 	background-color: light-dark(
-		hsl(from var(--light-bg) h s calc(l + 5)),
+		hsl(from var(--light-bg) h s calc(l - 5)),
 		hsl(from var(--dark-bg) h s calc(l + 5))
 	);
 	border: 0;
@@ -56,6 +59,7 @@ button.definition-tag:focus {
 }
 
 button.definition-tag.active-tag {
+	color: light-dark(var(--dark-text), var(--light-text));
 	background-color: light-dark(var(--light-accent), var(--dark-accent));
 }
 
