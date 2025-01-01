@@ -1,22 +1,19 @@
 import '@/styles/defDisplay.css';
 import '@/styles/defSearcher.css';
 
-const DefSearcher = ({
-	inputValue,
-	i18n,
-	tags,
-	filter,
-	handleInputChange,
-	handleTagChange,
-}) => {
+const DefSearcher = ({ input, i18n, tags, filter }) => {
 	return (
-		<form name='definition-searcher'>
+		<form
+			name='definition-searcher'
+			id='definition-searcher'
+		>
 			<p>{i18n.SEARCH.FORM.TITLE}</p>
+
 			<select
 				id='filters'
 				name='filter'
 				defaultValue='name'
-				onChange={(e) => filter.setSelectedFilter(e.target.value)}
+				onChange={filter.handleChangeFilter}
 			>
 				<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
 				<option value='definition'>{i18n.SEARCH.FORM.FILTER_2}</option>
@@ -35,7 +32,9 @@ const DefSearcher = ({
 									: 'definition-tag'
 							}
 							type='button'
-							onClick={(e) => handleTagChange(e)}
+							onClick={(e) =>
+								tags.setActiveTag(e.target.innerText)
+							}
 						>
 							<>{tags.tagsIcon}</>
 							{tag}
@@ -48,8 +47,13 @@ const DefSearcher = ({
 						type='text'
 						name='search-input'
 						id='search-input'
-						value={inputValue}
-						onChange={(e) => handleInputChange(e.target.value)}
+						placeholder={
+							filter.selectedFilter === 'letter'
+								? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
+								: i18n.SEARCH.FORM.INPUT_PLACEHOLDER
+						}
+						onChange={(e) => input.setInputValue(e.target.value)}
+						value={input.inputValue}
 					/>
 				</section>
 			)}
