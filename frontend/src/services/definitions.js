@@ -7,7 +7,7 @@ const getDefinitions = async (lang = 'es') => {
 
 const getDefinitionsByLetter = async (allDefinitions, letter) => {
 	const definitions = allDefinitions.filter(
-		(defGroup) => defGroup.letter === letter
+		(defGroup) => defGroup.letter === letter.toLowerCase()
 	);
 	return definitions;
 };
