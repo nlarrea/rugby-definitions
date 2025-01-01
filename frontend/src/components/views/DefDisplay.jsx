@@ -1,12 +1,15 @@
 import '@/styles/defDisplay.css';
 import DefSearcher from './DefSearcher.jsx';
 import DefinitionService from '@/services/definitions';
+import TagsService from '@/services/tags.js';
 
 import { useEffect, useState } from 'react';
 
-const DefDisplay = ({ lang, i18n, tags, loader }) => {
+const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 	const [allData, setAllData] = useState([]); // All the definitions
 	const [data, setData] = useState([]); // Definitions to be displayed
+	const [allTags, setAllTags] = useState([]);
+	const [activeTag, setActiveTag] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedFilter, setSelectedFilter] = useState('name');
 	const [inputValue, setInputValue] = useState('');
@@ -17,6 +20,9 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 
 		setAllData(foundData);
 		setData(foundData);
+
+		setAllTags(await TagsService.getAllTags(foundData));
+
 		setIsLoading(false);
 	};
 
@@ -56,8 +62,18 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 				allData,
 				inputValue,
 			]);
+		} else if (selectedFilter === 'tag') {
+			getDefinitionsData(DefinitionService.getDefinitionsByTag, [
+				allData,
+				activeTag,
+			]);
 		}
-	}, [selectedFilter, inputValue]);
+	}, [selectedFilter, inputValue, activeTag]);
+
+	const handleToggleActiveTag = (event) => {
+		event.preventDefault();
+		setActiveTag(event.target.innerText);
+	};
 
 	return (
 		<article id='definition-display'>
@@ -65,8 +81,10 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 				lang={lang}
 				i18n={i18n}
 				inputValue={inputValue}
-				handleFilterChange={setSelectedFilter}
+				tags={{ tags: allTags, tagsIcon, activeTag }}
+				filter={{ selectedFilter, setSelectedFilter }}
 				handleInputChange={setInputValue}
+				handleTagChange={handleToggleActiveTag}
 			/>
 
 			{isLoading ? (
@@ -75,12 +93,12 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 				</span>
 			) : (
 				<main id='found-definitions-display'>
-					{inputValue === '' ? (
+					{inputValue === '' && activeTag === '' ? (
 						allData.map((defGroup) => (
 							<DefinitionGroup
 								key={defGroup.letter}
 								defGroup={defGroup}
-								tagsIcon={tags}
+								tagsIcon={tagsIcon}
 							/>
 						))
 					) : data.length > 0 ? (
@@ -91,7 +109,7 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 								<DefinitionGroup
 									key={defGroup.letter}
 									defGroup={defGroup}
-									tagIcon={tags}
+									tagsIcon={tagsIcon}
 								/>
 							))
 						) : (
@@ -100,7 +118,7 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 								<Definition
 									key={`${def.name}-${index}`}
 									def={def}
-									tagIcon={tags}
+									tagsIcon={tagsIcon}
 								/>
 							))
 						)
@@ -114,15 +132,18 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 	);
 };
 
-const Definition = ({ def, tagIcon }) => {
+const Definition = ({ def, tagsIcon }) => {
 	return (
 		<article className='definition'>
 			<header>
 				<h4>{def?.name}</h4>
 				<div>
 					{def?.tags?.map((tag, index) => (
-						<span key={`${tag}-${index}`}>
-							<>{tagIcon}</>
+						<span
+							key={`${tag}-${index}`}
+							className='definition-tag'
+						>
+							<>{tagsIcon}</>
 							{tag}
 						</span>
 					))}
@@ -141,7 +162,7 @@ const DefinitionGroup = ({ defGroup, tagsIcon }) => {
 				<Definition
 					key={`${def.name}-${index}`}
 					def={def}
-					tagIcon={tagsIcon}
+					tagsIcon={tagsIcon}
 				/>
 			))}
 		</section>

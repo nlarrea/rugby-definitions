@@ -1,57 +1,58 @@
+import '@/styles/defDisplay.css';
+import '@/styles/defSearcher.css';
+
 const DefSearcher = ({
 	inputValue,
 	i18n,
-	handleFilterChange,
+	tags,
+	filter,
 	handleInputChange,
+	handleTagChange,
 }) => {
 	return (
 		<form name='definition-searcher'>
-			<section id='filters'>
-				<h4>{i18n.SEARCH.FORM.TITLE}</h4>
-				<div>
-					<label htmlFor='name'>
-						<input
-							type='radio'
-							name='filter'
-							id='name'
-							value='name'
-							defaultChecked
-							onClick={(e) => handleFilterChange(e.target.value)}
-						/>
-						<span>{i18n.SEARCH.FORM.FILTER_1}</span>
-					</label>
-					<label htmlFor='definition'>
-						<input
-							type='radio'
-							name='filter'
-							id='definition'
-							value='definition'
-							onClick={(e) => handleFilterChange(e.target.value)}
-						/>
-						<span>{i18n.SEARCH.FORM.FILTER_2}</span>
-					</label>
-					<label htmlFor='letter'>
-						<input
-							type='radio'
-							name='filter'
-							id='letter'
-							value='letter'
-							onClick={(e) => handleFilterChange(e.target.value)}
-						/>
-						<span>{i18n.SEARCH.FORM.FILTER_3}</span>
-					</label>
-				</div>
-			</section>
+			<p>{i18n.SEARCH.FORM.TITLE}</p>
+			<select
+				id='filters'
+				name='filter'
+				defaultValue='name'
+				onChange={(e) => filter.setSelectedFilter(e.target.value)}
+			>
+				<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
+				<option value='definition'>{i18n.SEARCH.FORM.FILTER_2}</option>
+				<option value='letter'>{i18n.SEARCH.FORM.FILTER_3}</option>
+				<option value='tag'>{i18n.SEARCH.FORM.FILTER_4}</option>
+			</select>
 
-			<section id='input'>
-				<input
-					type='text'
-					name='search-input'
-					id='search-input'
-					value={inputValue}
-					onChange={(e) => handleInputChange(e.target.value)}
-				/>
-			</section>
+			{tags.tags && filter.selectedFilter === 'tag' ? (
+				<section id='definition-tags-wrapper'>
+					{tags.tags.map((tag) => (
+						<button
+							key={tag}
+							className={
+								tags.activeTag === tag
+									? 'definition-tag active-tag'
+									: 'definition-tag'
+							}
+							type='button'
+							onClick={(e) => handleTagChange(e)}
+						>
+							<>{tags.tagsIcon}</>
+							{tag}
+						</button>
+					))}
+				</section>
+			) : (
+				<section id='input'>
+					<input
+						type='text'
+						name='search-input'
+						id='search-input'
+						value={inputValue}
+						onChange={(e) => handleInputChange(e.target.value)}
+					/>
+				</section>
+			)}
 		</form>
 	);
 };
