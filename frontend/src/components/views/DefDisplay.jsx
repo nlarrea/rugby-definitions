@@ -5,17 +5,25 @@ import DefinitionService from '@/services/definitions';
 import { useEffect, useState } from 'react';
 
 const DefDisplay = ({ lang, i18n, tags, loader }) => {
-	const [data, setData] = useState([]);
+	const [allData, setAllData] = useState([]); // All the definitions
+	const [data, setData] = useState([]); // Definitions to be displayed
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedFilter, setSelectedFilter] = useState('name');
 	const [inputValue, setInputValue] = useState('');
 
-	const getDefinitionsData = async (callback, params) => {
-		const response = await callback(...params);
-		const data = await response.json();
-		// Ensure the data is always a list of "dictionaries"
-		setData([].concat(data));
+	const getAllDefinitions = async () => {
+		const response = await DefinitionService.getDefinitions(lang);
+		const foundData = await response.json();
 
+		setAllData(foundData);
+		setData(foundData);
+		setIsLoading(false);
+	};
+
+	const getDefinitionsData = async (callback, params) => {
+		const foundData = await callback(...params);
+
+		setData(foundData);
 		setIsLoading(false);
 	};
 
@@ -24,8 +32,7 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 	 */
 	useEffect(() => {
 		setIsLoading(true);
-
-		getDefinitionsData(DefinitionService.getDefinitions, [lang]);
+		getAllDefinitions();
 	}, []);
 
 	/**
@@ -34,26 +41,22 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 	useEffect(() => {
 		setIsLoading(true);
 
-		setTimeout(() => {
-			if (inputValue === '') {
-				getDefinitionsData(DefinitionService.getDefinitions, [lang]);
-			} else if (selectedFilter === 'name') {
-				getDefinitionsData(DefinitionService.getDefinitionsByName, [
-					inputValue,
-					lang,
-				]);
-			} else if (selectedFilter === 'definition') {
-				getDefinitionsData(DefinitionService.getDefinitionsByWord, [
-					inputValue,
-					lang,
-				]);
-			} else if (selectedFilter === 'letter') {
-				getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
-					inputValue,
-					lang,
-				]);
-			}
-		}, 500);
+		if (selectedFilter === 'name') {
+			getDefinitionsData(DefinitionService.getDefinitionsByName, [
+				allData,
+				inputValue,
+			]);
+		} else if (selectedFilter === 'definition') {
+			getDefinitionsData(DefinitionService.getDefinitionsByWord, [
+				allData,
+				inputValue,
+			]);
+		} else if (selectedFilter === 'letter') {
+			getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
+				allData,
+				inputValue,
+			]);
+		}
 	}, [selectedFilter, inputValue]);
 
 	return (
@@ -72,23 +75,24 @@ const DefDisplay = ({ lang, i18n, tags, loader }) => {
 				</span>
 			) : (
 				<main id='found-definitions-display'>
-					{Object.keys(data).length > 0 ? (
+					{inputValue === '' ? (
+						allData.map((defGroup) => (
+							<DefinitionGroup
+								key={defGroup.letter}
+								defGroup={defGroup}
+								tagsIcon={tags}
+							/>
+						))
+					) : data.length > 0 ? (
 						// If there is data
 						Object.keys(data[0]).includes('letter') ? (
 							// DefinitionGroup[]
 							data.map((defGroup) => (
-								<section key={defGroup.letter}>
-									<h3 id={defGroup.letter}>
-										{defGroup.letter}
-									</h3>
-									{defGroup.definitions.map((def, index) => (
-										<Definition
-											key={`${def.name}-${index}`}
-											def={def}
-											tagIcon={tags}
-										/>
-									))}
-								</section>
+								<DefinitionGroup
+									key={defGroup.letter}
+									defGroup={defGroup}
+									tagIcon={tags}
+								/>
 							))
 						) : (
 							// Definition[]
@@ -126,6 +130,21 @@ const Definition = ({ def, tagIcon }) => {
 			</header>
 			<p>{def.definition}</p>
 		</article>
+	);
+};
+
+const DefinitionGroup = ({ defGroup, tagsIcon }) => {
+	return (
+		<section>
+			<h3 id={defGroup.letter}>{defGroup.letter}</h3>
+			{defGroup.definitions.map((def, index) => (
+				<Definition
+					key={`${def.name}-${index}`}
+					def={def}
+					tagIcon={tagsIcon}
+				/>
+			))}
+		</section>
 	);
 };
 

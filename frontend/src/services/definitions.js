@@ -5,23 +5,41 @@ const getDefinitions = async (lang = 'es') => {
 	return definitions;
 };
 
-const getDefinitionsByLetter = async (letter, lang = 'es') => {
-	const definitions = await fetch(API_PATHS.getDefsByLetter(letter, lang));
+const getDefinitionsByLetter = async (allDefinitions, letter) => {
+	const definitions = allDefinitions.filter(
+		(defGroup) => defGroup.letter === letter
+	);
 	return definitions;
 };
 
-const getDefinitionsByTag = async (tag, lang = 'es') => {
-	const definitions = await fetch(API_PATHS.getDefsByTag(tag, lang));
+const getDefinitionsByTag = async (allDefinitions, tag) => {
+	const definitions = allDefinitions.filter((defGroup) =>
+		defGroup.descriptions.tags.includes(tag)
+	);
 	return definitions;
 };
 
-const getDefinitionsByWord = async (word, lang = 'es') => {
-	const definitions = await fetch(API_PATHS.getDefsByWord(word, lang));
+const getDefinitionsByWord = async (allDefinitions, word) => {
+	let definitions = [];
+	allDefinitions.forEach((defGroup) => {
+		defGroup.definitions.forEach((def) => {
+			if (def.definition.toLowerCase().includes(word.toLowerCase())) {
+				definitions.push(def);
+			}
+		});
+	});
 	return definitions;
 };
 
-const getDefinitionsByName = async (name, lang = 'es') => {
-	const definitions = await fetch(API_PATHS.getDefsByName(name, lang));
+const getDefinitionsByName = async (allDefinitions, name) => {
+	let definitions = [];
+	allDefinitions.forEach((defGroup) => {
+		defGroup.definitions.forEach((def) => {
+			if (def.name.toLowerCase().includes(name.toLowerCase())) {
+				definitions.push(def);
+			}
+		});
+	});
 	return definitions;
 };
 
