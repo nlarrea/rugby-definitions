@@ -8,7 +8,7 @@ const getAllTags = async (allDefinitions) => {
 		});
 	});
 
-	return [...new Set(tags)];
+	return [...new Set(tags.sort())];
 };
 
 const TagsService = { getAllTags };
