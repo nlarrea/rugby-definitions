@@ -2,7 +2,6 @@
 import GithubIcon from '@/components/icons/Github.astro';
 import LinkedinIcon from '@/components/icons/Linkedin.astro';
 import EnvelopeIcon from '@/components/icons/Envelope.astro';
-import CopyrightIcon from '@/components/icons/Copyright.astro';
 import { getI18N } from '@/i18n';
 
 const { currentLocale } = Astro;
@@ -10,35 +9,40 @@ const i18n = getI18N({ currentLocale });
 ---
 
 <footer id='footer'>
-	<header>
-		<h3>{i18n.FOOTER.TITLE}</h3>
-	</header>
-
 	<main>
 		<article class='socials'>
-			<a
-				href='https://github.com/nlarrea/rugby-definitions'
-				target='_blank'
-				rel='noopener noreferrer'
-			>
-				<GithubIcon />
-			</a>
-			<a
-				href='https://www.linkedin.com/in/naia-larrea/'
-				target='_blank'
-				rel='noopener noreferrer'
-			>
-				<LinkedinIcon />
-			</a>
-			<a href='mailto:larrea.naia@gmail.com'>
-				<EnvelopeIcon />
-			</a>
+			<header>
+				<h3>{i18n.FOOTER.TITLE}</h3>
+			</header>
+
+			<nav>
+				<a
+					href='https://github.com/nlarrea/rugby-definitions'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					<GithubIcon />
+				</a>
+
+				<a
+					href='https://www.linkedin.com/in/naia-larrea/'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					<LinkedinIcon />
+				</a>
+
+				<a href='mailto:larrea.naia@gmail.com'>
+					<EnvelopeIcon />
+				</a>
+			</nav>
 		</article>
 
 		<article class='terms'>
-			<p id='copyright'>
-				<CopyrightIcon /> 2025-present Rugby Definitions. All Rights Reserved.
-			</p>
+			<span>
+				&copy; {i18n.FOOTER.COPYRIGHT}
+			</span>
+
 			<a
 				href='/code-of-conduct'
 				target='_blank'
@@ -54,32 +58,13 @@ const i18n = getI18N({ currentLocale });
 	footer#footer {
 		width: 100%;
 		min-height: 8em;
-		padding: 2em 2em 3em;
+		padding: 3em 2em;
 
 		color: var(--dark-text);
 		background-color: light-dark(
 			hsl(from var(--light-footer) h s calc(l - 10)),
 			hsl(from var(--dark-bg) h s calc(l - 10))
 		);
-
-		#copyright,
-		#copyright + a {
-			width: fit-content;
-			font-size: 0.8em;
-			line-height: 1.5cap;
-
-			display: flex;
-			align-items: center;
-
-			svg {
-				height: 1em;
-				aspect-ratio: 1;
-			}
-		}
-
-		h3 {
-			margin-bottom: 2em;
-		}
 
 		main {
 			display: grid;
@@ -88,9 +73,10 @@ const i18n = getI18N({ currentLocale });
 
 			article {
 				display: flex;
+				flex-direction: column;
 				align-items: center;
 				justify-content: center;
-				gap: 2em;
+				gap: 0.5em;
 
 				a {
 					color: inherit;
@@ -105,18 +91,31 @@ const i18n = getI18N({ currentLocale });
 					}
 				}
 
-				&.socials a {
-					text-decoration: none;
+				&.socials nav {
+					margin-top: 1em;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 2em;
+
+					a {
+						text-decoration: none;
+					}
+				}
+
+				&.terms {
+					width: fit-content;
+					font-size: 0.8em;
+					line-height: 1.5cap;
+
+					text-align: center;
+					text-wrap: balance;
 				}
 			}
 			article.socials a:hover,
 			article.socials a:focus {
 				-webkit-animation: jello-horizontal 0.9s both;
 				animation: jello-horizontal 0.5s both;
-			}
-			article.terms {
-				flex-direction: column;
-				gap: 0.5em;
 			}
 		}
 	}
