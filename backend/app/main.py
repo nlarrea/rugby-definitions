@@ -5,7 +5,11 @@ from routers import definitions
 
 app = FastAPI()
 
-ORIGINS = ("http://localhost:4321", "https://nlarrea.github.io")
+ORIGINS = (
+    "http://localhost:4321",
+    "https://nlarrea.github.io",
+    "https://rugby-definitions.vercel.app/",
+)
 
 # Routers
 app.include_router(definitions.router)

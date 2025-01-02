@@ -1,4 +1,4 @@
-const apiUrl = 'http://127.0.0.1:8000';
+const apiUrl = 'https://rugby-definitions.up.railway.app';
 
 export const API_PATHS = {
 	getAllDefinitions: (lang = 'es') => `${apiUrl}/definitions?lang=${lang}`,
