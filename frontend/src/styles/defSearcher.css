@@ -22,7 +22,6 @@ form#definition-searcher {
 		select,
 		input[type='text'] {
 			padding: 0.75em 1.5em;
-			outline: none;
 
 			background-color: light-dark(
 				hsl(from var(--light-bg) h s calc(l - 5)),

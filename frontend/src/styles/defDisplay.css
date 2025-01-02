@@ -38,17 +38,11 @@ article#definitions-display-container {
 	}
 }
 
-@media screen and (max-width: 834px) {
-	#found-definitions-display div#definitions-wrapper {
-		padding-inline: 2em;
-	}
-}
-
 section.definition-group {
 	padding-left: 1em;
 	border-left: 1px solid
 		light-dark(
-			hsl(from var(--light-bg) h s calc(l - 5)),
+			hsl(from var(--light-bg) h s calc(l - 15)),
 			hsl(from var(--dark-bg) h s calc(l + 5))
 		);
 
@@ -66,12 +60,12 @@ article.definition {
 		align-items: center;
 		justify-content: space-between;
 		gap: 0.5em;
-		flex-wrap: wrap-reverse;
+		flex-flow: wrap-reverse;
 
 		div {
+			margin-left: auto;
 			display: flex;
 			align-items: center;
-			justify-content: center;
 			gap: 0.5em;
 		}
 	}
@@ -84,8 +78,6 @@ article.definition {
 
 span.definition-tag,
 button.definition-tag {
-	padding: 0.25em 0.75em;
-
 	font-family: 'JetBrains Mono', serif;
 	font-size: 0.75em;
 	font-weight: 400;
@@ -97,26 +89,31 @@ button.definition-tag {
 
 	transition: all 0.3s;
 	background-color: light-dark(
-		hsl(from var(--light-bg) h s calc(l - 5)),
+		hsl(from var(--light-bg) h s calc(l - 10)),
 		hsl(from var(--dark-bg) h s calc(l + 5))
 	);
 	border: 1px solid
 		light-dark(
-			hsl(from var(--light-bg) h s calc(l - 10)),
+			hsl(from var(--light-bg) h s calc(l - 15)),
 			hsl(from var(--dark-bg) h s calc(l + 10))
 		);
 	border-radius: 0.5em;
 
 	svg {
 		width: 1.2em;
-		aspect-ratio: 1/1;
+		height: 1.2em;
 	}
+}
+span.definition-tag {
+	padding: 0.25em 0.75em;
+}
+button.definition-tag {
+	padding: 0.75em 1.5em;
 }
 
 button.definition-tag:hover,
 button.definition-tag:focus {
 	cursor: pointer;
-	outline: none;
 	background-color: light-dark(
 		hsl(from var(--light-bg) h s calc(l + 10)),
 		hsl(from var(--dark-bg) h s calc(l + 10))
@@ -136,4 +133,10 @@ span.data-loader {
 	align-items: center;
 	justify-content: center;
 	gap: 1em;
+}
+
+@media screen and (max-width: 834px) {
+	#found-definitions-display div#definitions-wrapper {
+		padding-inline: 2em;
+	}
 }
