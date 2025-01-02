@@ -7,42 +7,44 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 			name='definition-searcher'
 			id='definition-searcher'
 		>
-			<p>{i18n.SEARCH.FORM.TITLE}</p>
+			<p>{i18n.SEARCH.FORM.TITLE}:</p>
 
-			<select
-				id='filters'
-				name='filter'
-				defaultValue='name'
-				onChange={filter.handleChangeFilter}
-			>
-				<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
-				<option value='definition'>{i18n.SEARCH.FORM.FILTER_2}</option>
-				<option value='letter'>{i18n.SEARCH.FORM.FILTER_3}</option>
-				<option value='tag'>{i18n.SEARCH.FORM.FILTER_4}</option>
-			</select>
+			<main>
+				<select
+					id='filters'
+					name='filter'
+					defaultValue='name'
+					onChange={filter.handleChangeFilter}
+				>
+					<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
+					<option value='definition'>
+						{i18n.SEARCH.FORM.FILTER_2}
+					</option>
+					<option value='letter'>{i18n.SEARCH.FORM.FILTER_3}</option>
+					<option value='tag'>{i18n.SEARCH.FORM.FILTER_4}</option>
+				</select>
 
-			{tags.tags && filter.selectedFilter === 'tag' ? (
-				<section id='definition-tags-wrapper'>
-					{tags.tags.map((tag) => (
-						<button
-							key={tag}
-							className={
-								tags.activeTag === tag
-									? 'definition-tag active-tag'
-									: 'definition-tag'
-							}
-							type='button'
-							onClick={(e) =>
-								tags.setActiveTag(e.target.innerText)
-							}
-						>
-							<>{tags.tagsIcon}</>
-							{tag}
-						</button>
-					))}
-				</section>
-			) : (
-				<section id='input'>
+				{tags.tags && filter.selectedFilter === 'tag' ? (
+					<section id='definition-tags-wrapper'>
+						{tags.tags.map((tag) => (
+							<button
+								key={tag}
+								className={
+									tags.activeTag === tag
+										? 'definition-tag active-tag'
+										: 'definition-tag'
+								}
+								type='button'
+								onClick={(e) =>
+									tags.setActiveTag(e.target.innerText)
+								}
+							>
+								<>{tags.tagsIcon}</>
+								{tag}
+							</button>
+						))}
+					</section>
+				) : (
 					<input
 						type='text'
 						name='search-input'
@@ -55,8 +57,8 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 						onChange={(e) => input.setInputValue(e.target.value)}
 						value={input.inputValue}
 					/>
-				</section>
-			)}
+				)}
+			</main>
 		</form>
 	);
 };

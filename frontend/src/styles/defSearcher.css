@@ -1,0 +1,53 @@
+form#definition-searcher {
+	width: min(100%, var(--app-max-width));
+	margin: auto;
+
+	p {
+		margin-bottom: 1em;
+	}
+
+	main {
+		display: flex;
+		gap: 1em;
+
+		input {
+			flex: 1 1 auto;
+		}
+
+		&:has(select + section) {
+			flex-direction: column;
+			gap: 0.5em;
+		}
+
+		select,
+		input[type='text'] {
+			padding: 0.75em 1.5em;
+			outline: none;
+
+			background-color: light-dark(
+				hsl(from var(--light-bg) h s calc(l - 5)),
+				hsl(from var(--dark-bg) h s calc(l - 5))
+			);
+			border: 1px solid
+				light-dark(
+					hsl(from var(--light-bg) h s calc(l - 10)),
+					hsl(from var(--dark-bg) h s calc(l + 10))
+				);
+			border-radius: 0.75em;
+
+			font-family: 'Poppins', sans-serif;
+			font-size: 1em;
+
+			transition: all 0.3s;
+
+			&:focus {
+				border: 1px solid
+					light-dark(var(--light-accent), var(--dark-accent));
+			}
+		}
+
+		select {
+			cursor: pointer;
+		}
+	}
+}
