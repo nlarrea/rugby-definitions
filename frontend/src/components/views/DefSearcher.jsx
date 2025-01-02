@@ -34,9 +34,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 										: 'definition-tag'
 								}
 								type='button'
-								onClick={(e) =>
-									tags.setActiveTag(e.target.innerText)
-								}
+								onClick={tags.handleChangeTag}
 							>
 								<>{tags.tagsIcon}</>
 								{tag}

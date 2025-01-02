@@ -91,13 +91,23 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 		setSelectedFilter(event.target.value);
 	};
 
+	const handleChangeTag = (event) => {
+		const selectedTag = event.target.innerText;
+
+		if (activeTag === selectedTag) {
+			setActiveTag('');
+		} else {
+			setActiveTag(selectedTag);
+		}
+	};
+
 	return (
 		<article id='definitions-display-container'>
 			<DefSearcher
 				i18n={i18n}
 				input={{ inputValue, setInputValue }}
 				filter={{ selectedFilter, handleChangeFilter }}
-				tags={{ tags: allTags, tagsIcon, activeTag, setActiveTag }}
+				tags={{ tags: allTags, tagsIcon, activeTag, handleChangeTag }}
 			/>
 
 			<main id='found-definitions-display'>

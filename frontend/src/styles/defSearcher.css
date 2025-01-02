@@ -59,4 +59,8 @@ section#definition-tags-wrapper {
 	align-items: center;
 	justify-content: center;
 	gap: 0.5em;
+
+	button svg {
+		pointer-events: none;
+	}
 }
