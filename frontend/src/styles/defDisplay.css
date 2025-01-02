@@ -1,3 +1,43 @@
+article#definitions-display-container {
+	width: 100%;
+
+	flex-grow: 1;
+
+	display: flex;
+	flex-direction: column;
+}
+
+#found-definitions-display {
+	width: 100%;
+	margin-top: 2em;
+	padding: 2em 0;
+
+	position: relative;
+	overflow: hidden;
+
+	flex: 1 1 auto;
+
+	background-color: light-dark(
+		hsl(from var(--light-bg) h s calc(l - 5)),
+		hsl(from var(--dark-bg) h s calc(l - 5))
+	);
+
+	svg.transition-image {
+		position: absolute;
+		top: 0;
+
+		color: light-dark(var(--light-bg), var(--dark-bg));
+	}
+
+	div#definitions-wrapper {
+		width: min(100%, var(--app-max-width));
+		margin-inline: auto;
+
+		position: relative;
+		z-index: 1;
+	}
+}
+
 article.definition {
 	header {
 		display: flex;
@@ -39,7 +79,11 @@ button.definition-tag {
 		hsl(from var(--light-bg) h s calc(l - 5)),
 		hsl(from var(--dark-bg) h s calc(l + 5))
 	);
-	border: 0;
+	border: 1px solid
+		light-dark(
+			hsl(from var(--light-bg) h s calc(l - 10)),
+			hsl(from var(--dark-bg) h s calc(l + 10))
+		);
 	border-radius: 0.5em;
 
 	svg {
@@ -61,6 +105,7 @@ button.definition-tag:focus {
 button.definition-tag.active-tag {
 	color: light-dark(var(--dark-text), var(--light-text));
 	background-color: light-dark(var(--light-accent), var(--dark-accent));
+	border-color: light-dark(var(--light-accent), var(--dark-accent));
 }
 
 span.data-loader {
@@ -70,10 +115,6 @@ span.data-loader {
 	align-items: center;
 	justify-content: center;
 	gap: 1em;
-}
-
-#found-definitions-display {
-	margin-top: 2em;
 }
 
 section#definition-tags-wrapper {
