@@ -116,12 +116,3 @@ span.data-loader {
 	justify-content: center;
 	gap: 1em;
 }
-
-section#definition-tags-wrapper {
-	margin: 1em auto;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	gap: 0.5em;
-}

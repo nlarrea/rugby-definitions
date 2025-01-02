@@ -1,4 +1,3 @@
-import '@/styles/defDisplay.css';
 import '@/styles/defSearcher.css';
 
 const DefSearcher = ({ input, i18n, tags, filter }) => {
