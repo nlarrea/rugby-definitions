@@ -122,11 +122,16 @@ const otherLocales = Object.values(Languages).filter(
 			display: block;
 		}
 
-		.dropdown-content li:hover {
-			background-color: light-dark(
-				var(--light-accent),
-				var(--dark-accent)
-			);
+		.dropdown-content li {
+			transition: all 0.3s;
+
+			&:hover {
+				color: light-dark(var(--light-bg), var(--dark-bg));
+				background-color: light-dark(
+					var(--light-accent),
+					var(--dark-accent)
+				);
+			}
 		}
 	}
 </style>
