@@ -46,6 +46,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 						type='text'
 						name='search-input'
 						id='search-input'
+						spellCheck='false'
 						placeholder={
 							filter.selectedFilter === 'letter'
 								? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
