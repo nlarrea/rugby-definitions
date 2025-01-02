@@ -7,6 +7,11 @@
 		"TITLE_ABOUT": "More about Rugby | Find information on official websites",
 		"DESCRIPTION_ABOUT": "Find much more information on the official World Rugby websites to stay up to date."
 	},
+	"NAVBAR": {
+		"SEARCH": "Search",
+		"QUIZ": "Quiz",
+		"ABOUT": "More about Rugby"
+	},
 	"SEARCH": {
 		"TITLE": "Rugby Definitions",
 		"DESCRIPTION": "Find the definitions you want using the Rugby definition finder!",
