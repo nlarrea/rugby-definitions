@@ -23,5 +23,9 @@
 			"INPUT_PLACEHOLDER": "Tackle",
 			"INPUT_PLACEHOLDER_LETTER": "A"
 		}
+	},
+	"FOOTER": {
+		"TITLE": "Get in touch",
+		"COPYRIGHT": "2025-present Rugby Definitions. All Rights Reserved."
 	}
 }
