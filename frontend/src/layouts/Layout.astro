@@ -2,9 +2,17 @@
 import { getLangFromUrl } from '@/i18n/utils';
 import { colors } from '@/constants/colors';
 import Navbar from '@/components/views/Navbar.astro';
+import Footer from '@/components/views/Footer.astro';
 
-const { darkBg, darkText, darkAccent, lightBg, lightText, lightAccent } =
-	colors;
+const {
+	darkBg,
+	darkText,
+	darkAccent,
+	lightBg,
+	lightText,
+	lightAccent,
+	lightFooter,
+} = colors;
 
 interface Props {
 	title: string;
@@ -37,6 +45,7 @@ const lang = getLangFromUrl(Astro.url);
 		<main id='container'>
 			<slot />
 		</main>
+		<Footer />
 	</body>
 </html>
 
@@ -49,6 +58,7 @@ const lang = getLangFromUrl(Astro.url);
 		lightBg,
 		lightText,
 		lightAccent,
+		lightFooter,
 	}}
 >
 	:root {
@@ -58,34 +68,47 @@ const lang = getLangFromUrl(Astro.url);
 		--light-bg: var(--lightBg);
 		--light-text: var(--lightText);
 		--light-accent: var(--lightAccent);
+		--light-footer: var(--lightFooter);
 		--app-max-width: 700px;
 		color-scheme: light dark;
 		accent-color: light-dark(var(--light-accent), var(--dark-accent));
 	}
 
-	html,
-	body {
-		padding: 0;
+	* {
 		margin: 0;
+		padding: 0;
 		box-sizing: border-box;
-		width: 100%;
-		height: max(100%, fit-content);
-
-		color: light-dark(var(--light-text), var(--dark-text));
-		background-color: light-dark(var(--light-bg), var(--dark-bg));
 
 		font-family: 'Poppins', system-ui, sans-serif;
 	}
 
-	h1 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		font-family: 'Tomorrow', serif;
-		font-weight: 700;
-		margin: 0;
+		font-weight: bold;
+	}
+
+	html,
+	body {
+		width: 100%;
+		min-height: 100svh;
+
+		color: light-dark(var(--light-text), var(--dark-text));
+		background-color: light-dark(var(--light-bg), var(--dark-bg));
+
+		display: flex;
+		flex-direction: column;
 	}
 
 	main#container {
-		width: min(100%, var(--app-max-width));
-		height: calc(100% - 4em);
-		margin-inline: auto;
+		flex: 1 1 auto;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>
