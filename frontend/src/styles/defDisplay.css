@@ -38,15 +38,26 @@ article#definitions-display-container {
 	}
 }
 
+section.definition-group {
+	padding-left: 1em;
+	border-left: 1px solid
+		light-dark(
+			hsl(from var(--light-bg) h s calc(l - 5)),
+			hsl(from var(--dark-bg) h s calc(l + 5))
+		);
+
+	h3 {
+		margin-bottom: 1em;
+	}
+}
+
 article.definition {
 	header {
+		margin-bottom: 0.2em;
+
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
-		h4 {
-			margin: 0;
-		}
 
 		div {
 			display: flex;
