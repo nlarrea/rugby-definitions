@@ -1,20 +1,36 @@
 ---
 import LanguagePicker from '@/components/LanguagePicker.astro';
-import {
-	getLangFromUrl,
-	useTranslations,
-	useTranslatedPath,
-} from 'src/i18n/utils';
+import MenuIcon from '../icons/Menu.astro';
+import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils';
+import { getI18N } from '@/i18n';
 
+// Translate paths
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+// Translate page content
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 ---
 
 <nav id='navbar'>
-	<a href={translatePath('/')} class='nav-link'>{t('nav.search')}</a>
-	<a href={translatePath('/examen')} class='nav-link'>{t('nav.quiz')}</a>
-	<a href={translatePath('/mas-rugby')} class='nav-link'>{t('nav.about')}</a>
+	<div id='hamburger-menu'>
+		<button class='drop-btn'>
+			<MenuIcon />
+		</button>
+
+		<div class='dropdown-content'>
+			<a href={translatePath('/')}>{i18n.NAVBAR.SEARCH}</a>
+			<a href={translatePath('/examen')}>{i18n.NAVBAR.QUIZ}</a>
+			<a href={translatePath('/mas-rugby')}>{i18n.NAVBAR.ABOUT}</a>
+		</div>
+	</div>
+
+	<a href={translatePath('/')} class='nav-link'>{i18n.NAVBAR.SEARCH}</a>
+	<a href={translatePath('/examen')} class='nav-link'>{i18n.NAVBAR.QUIZ}</a>
+	<a href={translatePath('/mas-rugby')} class='nav-link'
+		>{i18n.NAVBAR.ABOUT}</a
+	>
 	<LanguagePicker />
 </nav>
 
@@ -22,20 +38,20 @@ const translatePath = useTranslatedPath(lang);
 	nav#navbar {
 		flex: 0 0 auto;
 
-		width: fit-content;
+		width: var(--app-max-width);
 		height: 4em;
 		padding: 0 3em;
 		margin-inline: auto;
 
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: 3em;
+		justify-content: space-between;
 
 		position: sticky;
 		top: 0;
 		z-index: 10;
 
+		color: light-dark(var(--light-text), var(--dark-text));
 		background-color: light-dark(
 			hsl(from var(--light-bg) h s calc(l - 5)),
 			hsl(from var(--dark-bg) h s calc(l - 10))
@@ -55,6 +71,91 @@ const translatePath = useTranslatedPath(lang);
 				color: light-dark(var(--light-accent), var(--dark-accent));
 			}
 		}
+
+		#hamburger-menu {
+			display: none;
+		}
+	}
+
+	@media screen and (max-width: 768px) {
+		nav#navbar {
+			width: 100%;
+			padding: 0 2em;
+			border-radius: 0;
+
+			a.nav-link {
+				display: none;
+			}
+
+			#hamburger-menu {
+				display: inline-block;
+				position: relative;
+
+				.drop-btn {
+					cursor: pointer;
+					outline: none;
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					background-color: transparent;
+					border: 0;
+
+					transition: all 0.3s;
+
+					&:hover,
+					&:focus {
+						color: light-dark(
+							var(--light-accent),
+							var(--dark-accent)
+						);
+					}
+				}
+
+				.dropdown-content {
+					min-width: 160px;
+
+					display: none;
+					position: absolute;
+					z-index: 2;
+
+					background-color: light-dark(
+						hsl(from var(--light-bg) h s calc(l - 5)),
+						hsl(from var(--dark-bg) h s calc(l - 5))
+					);
+					box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+
+					a {
+						padding: 0.5em 1em;
+
+						display: block;
+						text-decoration: none;
+						text-wrap: nowrap;
+
+						color: inherit;
+						font-weight: 500;
+
+						transition: all 0.3s;
+
+						&:hover,
+						&:focus,
+						&.active-nav {
+							color: light-dark(
+								var(--light-accent),
+								var(--dark-accent)
+							);
+						}
+					}
+				}
+			}
+
+			&.is-open {
+				#hamburger-menu .dropdown-content {
+					display: block;
+				}
+			}
+		}
 	}
 </style>
 
@@ -67,5 +168,10 @@ const translatePath = useTranslatedPath(lang);
 		if (link.href === currentUrl) {
 			link.classList.add('active-nav');
 		}
+	});
+
+	const hamburgerBtn = document.querySelector('#hamburger-menu');
+	hamburgerBtn?.addEventListener('click', () => {
+		nav?.classList.toggle('is-open');
 	});
 </script>
