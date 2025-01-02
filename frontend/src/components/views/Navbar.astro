@@ -1,6 +1,5 @@
 ---
 import LanguagePicker from '@/components/LanguagePicker.astro';
-import MenuIcon from '../icons/Menu.astro';
 import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils';
 import { getI18N } from '@/i18n';
 
@@ -16,7 +15,9 @@ const i18n = getI18N({ currentLocale });
 <nav id='navbar'>
 	<div id='hamburger-menu'>
 		<button class='drop-btn'>
-			<MenuIcon />
+			<div></div>
+			<div></div>
+			<div></div>
 		</button>
 
 		<div class='dropdown-content'>
@@ -92,21 +93,39 @@ const i18n = getI18N({ currentLocale });
 				position: relative;
 
 				.drop-btn {
+					width: 24px;
+					height: 18px;
+
 					cursor: pointer;
 					outline: none;
 
 					display: flex;
+					flex-direction: column;
 					align-items: center;
-					justify-content: center;
+					justify-content: space-between;
 
 					background-color: transparent;
 					border: 0;
 
 					transition: all 0.3s;
 
-					&:hover,
-					&:focus {
-						color: light-dark(
+					div {
+						width: 100%;
+						height: 2px;
+
+						background-color: light-dark(
+							var(--light-text),
+							var(--dark-text)
+						);
+						border-radius: 5px;
+
+						transform-origin: left;
+						transition: all 0.3s;
+					}
+
+					&:hover div,
+					&:focus div {
+						background-color: light-dark(
 							var(--light-accent),
 							var(--dark-accent)
 						);
@@ -151,8 +170,24 @@ const i18n = getI18N({ currentLocale });
 			}
 
 			&.is-open {
-				#hamburger-menu .dropdown-content {
-					display: block;
+				#hamburger-menu {
+					.drop-btn {
+						div:first-child {
+							transform: rotate(45deg);
+						}
+
+						div:nth-child(2) {
+							opacity: 0;
+						}
+
+						div:last-child {
+							transform: rotate(-45deg);
+						}
+					}
+
+					.dropdown-content {
+						display: block;
+					}
 				}
 			}
 		}
