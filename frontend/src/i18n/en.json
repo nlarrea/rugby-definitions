@@ -20,7 +20,7 @@
 			"NOT_FOUND": "No such definitions have been found."
 		},
 		"FORM": {
-			"TITLE": "Select how you want to search",
+			"TITLE": "Select the search type",
 			"FILTER_1": "By name",
 			"FILTER_2": "By word",
 			"FILTER_3": "By first letter",
