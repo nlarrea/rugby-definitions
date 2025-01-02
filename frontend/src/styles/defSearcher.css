@@ -52,6 +52,17 @@ form#definition-searcher {
 	}
 }
 
+@media screen and (max-width: 834px) {
+	form#definition-searcher {
+		padding-inline: 2em;
+		overflow: hidden;
+
+		main {
+			flex-direction: column;
+		}
+	}
+}
+
 section#definition-tags-wrapper {
 	margin: 1em auto;
 	display: flex;

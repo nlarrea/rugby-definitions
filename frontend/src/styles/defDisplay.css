@@ -10,7 +10,7 @@ article#definitions-display-container {
 #found-definitions-display {
 	width: 100%;
 	margin-top: 2em;
-	padding: 2em 0;
+	padding-top: 2em;
 
 	position: relative;
 	overflow: hidden;
@@ -38,6 +38,12 @@ article#definitions-display-container {
 	}
 }
 
+@media screen and (max-width: 834px) {
+	#found-definitions-display div#definitions-wrapper {
+		padding-inline: 2em;
+	}
+}
+
 section.definition-group {
 	padding-left: 1em;
 	border-left: 1px solid
@@ -48,6 +54,7 @@ section.definition-group {
 
 	h3 {
 		margin-bottom: 1em;
+		opacity: 0.7;
 	}
 }
 
@@ -58,6 +65,8 @@ article.definition {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 0.5em;
+		flex-wrap: wrap-reverse;
 
 		div {
 			display: flex;
@@ -69,6 +78,7 @@ article.definition {
 
 	p {
 		margin-bottom: 2em;
+		text-wrap: pretty;
 	}
 }
 
