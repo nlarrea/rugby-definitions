@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { getLangFromUrl } from '@/i18n/utils';
 import { colors } from '@/constants/colors';
 import Navbar from '@/components/views/Navbar.astro';
@@ -31,7 +32,6 @@ const lang = getLangFromUrl(Astro.url);
 		<meta name='description' content={description} />
 		<meta name='viewport' content='width=device-width' />
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-		<meta name='generator' content={Astro.generator} />
 		<meta
 			http-equiv='Content-Security-Policy'
 			content='upgrade-insecure-requests'
@@ -43,6 +43,7 @@ const lang = getLangFromUrl(Astro.url);
 			href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Poppins:wght@400;500&family=Tomorrow:wght@700&display=swap'
 			rel='stylesheet'
 		/>
+		<ClientRouter />
 	</head>
 	<body>
 		<Navbar />
