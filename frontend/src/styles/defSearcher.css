@@ -10,8 +10,31 @@ form#definition-searcher {
 		display: flex;
 		gap: 1em;
 
-		input {
+		label:has(input) {
 			flex: 1 1 auto;
+
+			position: relative;
+
+			input {
+				width: 100%;
+			}
+
+			span {
+				position: absolute;
+				top: 0.5em;
+				right: 1em;
+
+				display: flex;
+				align-items: center;
+				gap: 0.5em;
+
+				font-size: 0.8em;
+
+				svg {
+					height: 1.2cap;
+					width: 1.2cap;
+				}
+			}
 		}
 
 		&:has(select + section) {
@@ -47,6 +70,16 @@ form#definition-searcher {
 
 		select {
 			cursor: pointer;
+		}
+
+		label {
+			input[type='text'].warning {
+				border: 1px solid #ffc107;
+			}
+
+			span {
+				color: #ffc107;
+			}
 		}
 	}
 }

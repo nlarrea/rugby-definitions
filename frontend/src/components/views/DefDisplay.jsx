@@ -21,7 +21,6 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 
 		setAllData(foundData);
 		setData(foundData);
-
 		setAllTags(await TagsService.getAllTags(foundData));
 
 		setIsLoading(false);
@@ -61,7 +60,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 		} else if (selectedFilter === 'letter') {
 			getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
 				allData,
-				inputValue,
+				inputValue.length > 1 ? inputValue[0] : inputValue,
 			]);
 		} else if (selectedFilter === 'tag') {
 			getDefinitionsData(DefinitionService.getDefinitionsByTag, [
@@ -75,7 +74,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 		event.preventDefault();
 
 		/* Reset input value when switching to tag-filter and reset active tag
-		when using input-kind-filter */
+		when using input-like-filter */
 		if (
 			['name', 'definition', 'letter'].includes(selectedFilter) &&
 			event.target.value === 'tag'

@@ -1,5 +1,5 @@
 import '@/styles/defSearcher.css';
-import { Tags } from 'lucide-react';
+import { Tags, TriangleAlert } from 'lucide-react';
 
 const DefSearcher = ({ input, i18n, tags, filter }) => {
 	return (
@@ -43,19 +43,36 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 						))}
 					</section>
 				) : (
-					<input
-						type='text'
-						name='search-input'
-						id='search-input'
-						spellCheck='false'
-						placeholder={
-							filter.selectedFilter === 'letter'
-								? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
-								: i18n.SEARCH.FORM.INPUT_PLACEHOLDER
-						}
-						onChange={(e) => input.setInputValue(e.target.value)}
-						value={input.inputValue}
-					/>
+					<label htmlFor='search-input'>
+						<input
+							type='text'
+							name='search-input'
+							id='search-input'
+							className={
+								filter.selectedFilter === 'letter' &&
+								input.inputValue.length > 1
+									? 'warning'
+									: ''
+							}
+							spellCheck='false'
+							placeholder={
+								filter.selectedFilter === 'letter'
+									? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
+									: i18n.SEARCH.FORM.INPUT_PLACEHOLDER
+							}
+							onChange={(e) =>
+								input.setInputValue(e.target.value)
+							}
+							value={input.inputValue}
+						/>
+						{filter.selectedFilter === 'letter' &&
+							input.inputValue.length > 1 && (
+								<span>
+									<TriangleAlert />
+									{i18n.SEARCH.FORM.WARNING_MSG}
+								</span>
+							)}
+					</label>
 				)}
 			</main>
 		</form>

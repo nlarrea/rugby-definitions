@@ -27,7 +27,8 @@
 			"FILTER_3": "Por primera letra",
 			"FILTER_4": "Por etiqueta",
 			"INPUT_PLACEHOLDER": "Placaje",
-			"INPUT_PLACEHOLDER_LETTER": "A"
+			"INPUT_PLACEHOLDER_LETTER": "A",
+			"WARNING_MSG": "Solo se busca la primera letra"
 		}
 	},
 	"FOOTER": {
