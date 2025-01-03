@@ -2,10 +2,11 @@ import '@/styles/defDisplay.css';
 import DefSearcher from './DefSearcher.jsx';
 import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
+import { Tags } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
 
-const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
+const DefDisplay = ({ lang, i18n, loader }) => {
 	const [allData, setAllData] = useState([]); // All the definitions
 	const [data, setData] = useState([]); // Definitions to be displayed
 	const [allTags, setAllTags] = useState([]);
@@ -107,7 +108,7 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 				i18n={i18n}
 				input={{ inputValue, setInputValue }}
 				filter={{ selectedFilter, handleChangeFilter }}
-				tags={{ tags: allTags, tagsIcon, activeTag, handleChangeTag }}
+				tags={{ tags: allTags, activeTag, handleChangeTag }}
 			/>
 
 			<main id='found-definitions-display'>
@@ -135,7 +136,6 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 								<DefinitionGroup
 									key={defGroup.letter}
 									defGroup={defGroup}
-									tagsIcon={tagsIcon}
 								/>
 							))
 						) : data.length > 0 ? (
@@ -146,7 +146,6 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 									<DefinitionGroup
 										key={defGroup.letter}
 										defGroup={defGroup}
-										tagsIcon={tagsIcon}
 									/>
 								))
 							) : (
@@ -155,7 +154,6 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 									<Definition
 										key={`${def.name}-${index}`}
 										def={def}
-										tagsIcon={tagsIcon}
 									/>
 								))
 							)
@@ -170,7 +168,7 @@ const DefDisplay = ({ lang, i18n, tagsIcon, loader }) => {
 	);
 };
 
-const Definition = ({ def, tagsIcon }) => {
+const Definition = ({ def }) => {
 	return (
 		<article className='definition'>
 			<header>
@@ -181,7 +179,7 @@ const Definition = ({ def, tagsIcon }) => {
 							key={`${tag}-${index}`}
 							className='definition-tag'
 						>
-							<>{tagsIcon}</>
+							<Tags />
 							{tag}
 						</span>
 					))}
@@ -192,7 +190,7 @@ const Definition = ({ def, tagsIcon }) => {
 	);
 };
 
-const DefinitionGroup = ({ defGroup, tagsIcon }) => {
+const DefinitionGroup = ({ defGroup }) => {
 	return (
 		<section className='definition-group'>
 			<h3 id={defGroup.letter}>{defGroup.letter}</h3>
@@ -200,7 +198,6 @@ const DefinitionGroup = ({ defGroup, tagsIcon }) => {
 				<Definition
 					key={`${def.name}-${index}`}
 					def={def}
-					tagsIcon={tagsIcon}
 				/>
 			))}
 		</section>

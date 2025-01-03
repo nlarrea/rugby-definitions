@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import DefDisplay from '@/components/views/DefDisplay';
-import TagsIcon from '@/components/icons/Tags.astro';
 import Loader from '@/components/Loader.astro';
 import { getI18N } from '@/i18n';
 
@@ -20,7 +19,6 @@ const i18n = getI18N({ currentLocale });
 
 	<!-- @ts-ignore -->
 	<DefDisplay lang={currentLocale} i18n={i18n} client:only>
-		<TagsIcon slot='tagsIcon' />
 		<Loader slot='loader' />
 	</DefDisplay>
 </Layout>

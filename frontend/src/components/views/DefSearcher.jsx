@@ -1,4 +1,5 @@
 import '@/styles/defSearcher.css';
+import { Tags } from 'lucide-react';
 
 const DefSearcher = ({ input, i18n, tags, filter }) => {
 	return (
@@ -36,7 +37,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 								type='button'
 								onClick={tags.handleChangeTag}
 							>
-								<>{tags.tagsIcon}</>
+								<Tags />
 								{tag}
 							</button>
 						))}
