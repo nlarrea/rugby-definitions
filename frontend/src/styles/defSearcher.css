@@ -74,11 +74,11 @@ form#definition-searcher {
 
 		label {
 			input[type='text'].warning {
-				border: 1px solid #ffc107;
+				border: 1px solid light-dark(#dc3545, #ffc107);
 			}
 
 			span {
-				color: #ffc107;
+				color: light-dark(#dc3545, #ffc107);
 			}
 		}
 	}

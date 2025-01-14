@@ -5,7 +5,9 @@
 		"TITLE_QUIZ": "Prueba de definiciones | Pon a prueba tu conocimiento",
 		"DESCRIPTION_QUIZ": "Pon a prueba tu conocimiento sobre las diferentes definiciones de este deporte. ¡Aprende mientras te diviertes respondiendo cuestionarios!",
 		"TITLE_ABOUT": "Más sobre Rugby | Encuentra información en las webs oficiales",
-		"DESCRIPTION_ABOUT": "Find much more information on the official World Rugby websites to stay up to date."
+		"DESCRIPTION_ABOUT": "Encuentre mucha más información en los sitios web oficiales de World Rugby para mantenerse al día.",
+		"E404_TITLE": "Página no encontrada",
+		"E404_DESCRIPTION": "La página a la que has intentado acceder no está disponible."
 	},
 	"SOON": "Próximamente",
 	"NAVBAR": {
@@ -34,5 +36,11 @@
 	"FOOTER": {
 		"TITLE": "Ponte en contacto",
 		"COPYRIGHT": "2025-presente Definiciones de Rugby. Todos los Derechos Reservados."
+	},
+	"E404": {
+		"TITLE": "Página no encontrada",
+		"STRONG_CONTENT": "¡El TMO está revisando la página!",
+		"CONTENT": "Mientras tanto, ¿por qué no vuelves a buscar entre las definiciones oficiales?",
+		"BUTTON": "Volver al inicio"
 	}
 }

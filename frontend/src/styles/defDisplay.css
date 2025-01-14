@@ -5,11 +5,11 @@ article#definitions-display-container {
 
 	display: flex;
 	flex-direction: column;
+	gap: 2em;
 }
 
 #found-definitions-display {
 	width: 100%;
-	margin-top: 2em;
 	padding-top: 2em;
 
 	position: relative;

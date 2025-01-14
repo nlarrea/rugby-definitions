@@ -5,7 +5,9 @@
 		"TITLE_QUIZ": "Definitions Quiz | Test your knowledge",
 		"DESCRIPTION_QUIZ": "Test your knowledge of the different definitions of the sport - learn while having fun answering quizzes!",
 		"TITLE_ABOUT": "More about Rugby | Find information on official websites",
-		"DESCRIPTION_ABOUT": "Find much more information on the official World Rugby websites to stay up to date."
+		"DESCRIPTION_ABOUT": "Find much more information on the official World Rugby websites to stay up to date.",
+		"E404_TITLE": "Page not found",
+		"E404_DESCRIPTION": "The page you have tried to access is not available."
 	},
 	"SOON": "Coming soon",
 	"NAVBAR": {
@@ -34,5 +36,11 @@
 	"FOOTER": {
 		"TITLE": "Get in touch",
 		"COPYRIGHT": "2025-present Rugby Definitions. All Rights Reserved."
+	},
+	"E404": {
+		"TITLE": "Page not found",
+		"STRONG_CONTENT": "The TMO is checking the page!",
+		"CONTENT": "In the meantime, why don't you go back to looking at the official definitions?",
+		"BUTTON": "Go back home"
 	}
 }
