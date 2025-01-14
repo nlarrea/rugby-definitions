@@ -18,9 +18,16 @@ const {
 interface Props {
 	title: string;
 	description: string;
+	showNavbar?: boolean;
+	showFooter?: boolean;
 }
 
-const { title, description } = Astro.props;
+const {
+	title,
+	description,
+	showNavbar = true,
+	showFooter = true,
+} = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 ---
@@ -46,11 +53,13 @@ const lang = getLangFromUrl(Astro.url);
 		<ClientRouter />
 	</head>
 	<body>
-		<Navbar />
+		{showNavbar && <Navbar />}
+
 		<main id='container'>
 			<slot />
 		</main>
-		<Footer />
+
+		{showFooter && <Footer />}
 	</body>
 </html>
 
@@ -114,6 +123,8 @@ const lang = getLangFromUrl(Astro.url);
 
 	main#container {
 		flex: 1 1 auto;
+
+		position: relative;
 
 		display: flex;
 		flex-direction: column;
