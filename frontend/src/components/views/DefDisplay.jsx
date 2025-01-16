@@ -4,9 +4,10 @@ import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
 import { Tag } from 'lucide-react';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const DefDisplay = ({ lang, i18n, loader }) => {
+	const isRendered = useRef(false);
 	const [allData, setAllData] = useState([]); // All the definitions
 	const [data, setData] = useState([]); // Definitions to be displayed
 	const [allTags, setAllTags] = useState([]);
@@ -45,29 +46,33 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	 * Call the API again when one of the input values changes.
 	 */
 	useEffect(() => {
-		setIsLoading(true);
+		if (isRendered.current) {
+			setIsLoading(true);
 
-		if (selectedFilter === 'name') {
-			getDefinitionsData(DefinitionService.getDefinitionsByName, [
-				allData,
-				inputValue,
-			]);
-		} else if (selectedFilter === 'definition') {
-			getDefinitionsData(DefinitionService.getDefinitionsByWord, [
-				allData,
-				inputValue,
-			]);
-		} else if (selectedFilter === 'letter') {
-			getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
-				allData,
-				inputValue.length > 1 ? inputValue[0] : inputValue,
-			]);
-		} else if (selectedFilter === 'tag') {
-			getDefinitionsData(DefinitionService.getDefinitionsByTag, [
-				allData,
-				activeTag,
-			]);
+			if (selectedFilter === 'name') {
+				getDefinitionsData(DefinitionService.getDefinitionsByName, [
+					allData,
+					inputValue,
+				]);
+			} else if (selectedFilter === 'definition') {
+				getDefinitionsData(DefinitionService.getDefinitionsByWord, [
+					allData,
+					inputValue,
+				]);
+			} else if (selectedFilter === 'letter') {
+				getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
+					allData,
+					inputValue.length > 1 ? inputValue[0] : inputValue,
+				]);
+			} else if (selectedFilter === 'tag') {
+				getDefinitionsData(DefinitionService.getDefinitionsByTag, [
+					allData,
+					activeTag,
+				]);
+			}
 		}
+
+		isRendered.current = true;
 	}, [selectedFilter, inputValue, activeTag]);
 
 	const handleChangeFilter = (event) => {
