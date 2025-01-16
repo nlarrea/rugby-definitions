@@ -2,7 +2,7 @@ import '@/styles/defDisplay.css';
 import DefSearcher from './DefSearcher.jsx';
 import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
-import { Tags } from 'lucide-react';
+import { Tag } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
 
@@ -178,7 +178,7 @@ const Definition = ({ def }) => {
 							key={`${tag}-${index}`}
 							className='definition-tag'
 						>
-							<Tags />
+							<Tag />
 							{tag}
 						</span>
 					))}

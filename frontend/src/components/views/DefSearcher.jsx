@@ -1,5 +1,5 @@
 import '@/styles/defSearcher.css';
-import { Tags, TriangleAlert } from 'lucide-react';
+import { Tag, TriangleAlert } from 'lucide-react';
 
 const DefSearcher = ({ input, i18n, tags, filter }) => {
 	return (
@@ -38,7 +38,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 								type='button'
 								onClick={tags.handleChangeTag}
 							>
-								<Tags />
+								<Tag />
 								{tag}
 							</button>
 						))}
