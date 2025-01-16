@@ -15,6 +15,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 					name='filter'
 					defaultValue='name'
 					onChange={filter.handleChangeFilter}
+					aria-label='filters'
 				>
 					<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
 					<option value='definition'>
