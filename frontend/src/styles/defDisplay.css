@@ -78,7 +78,7 @@ article.definition {
 
 span.definition-tag,
 button.definition-tag {
-	font-family: 'JetBrains Mono', serif;
+	font-family: 'JetBrains Mono', monospace;
 	font-size: 0.75em;
 	font-weight: 400;
 
