@@ -171,7 +171,7 @@ const Definition = ({ def }) => {
 	return (
 		<article className='definition'>
 			<header>
-				<h4>{def?.name}</h4>
+				<h3>{def?.name}</h3>
 				<div>
 					{def?.tags?.map((tag, index) => (
 						<span
@@ -192,7 +192,7 @@ const Definition = ({ def }) => {
 const DefinitionGroup = ({ defGroup }) => {
 	return (
 		<section className='definition-group'>
-			<h3 id={defGroup.letter}>{defGroup.letter}</h3>
+			<h2 id={defGroup.letter}>{defGroup.letter}</h2>
 			{defGroup.definitions.map((def, index) => (
 				<Definition
 					key={`${def.name}-${index}`}
