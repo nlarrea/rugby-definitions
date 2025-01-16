@@ -35,21 +35,15 @@ const lang = getLangFromUrl(Astro.url);
 <!doctype html>
 <html lang={lang}>
 	<head>
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta charset='UTF-8' />
 		<meta name='description' content={description} />
 		<meta name='viewport' content='width=device-width' />
-		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta
 			http-equiv='Content-Security-Policy'
 			content='upgrade-insecure-requests'
 		/>
 		<title>{title}</title>
-		<link rel='preconnect' href='https://fonts.googleapis.com' />
-		<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
-		<link
-			href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Poppins:wght@400;500&family=Tomorrow:wght@700&display=swap'
-			rel='stylesheet'
-		/>
 		<ClientRouter />
 	</head>
 	<body>
@@ -89,6 +83,38 @@ const lang = getLangFromUrl(Astro.url);
 		font-size: clamp(0.8rem, 0.5375rem + 0.6vw, 1.1rem);
 	}
 
+	@font-face {
+		font-family: 'Poppins';
+		font-style: normal;
+		font-weight: 400;
+		font-display: swap;
+		src: url('/fonts/Poppins-Regular.woff2') format('woff2');
+	}
+
+	@font-face {
+		font-family: 'Poppins';
+		font-style: normal;
+		font-weight: 500;
+		font-display: swap;
+		src: url('/fonts/Poppins-SemiBold.woff2') format('woff2');
+	}
+
+	@font-face {
+		font-family: 'JetBrains Mono';
+		font-style: normal;
+		font-weight: normal;
+		font-display: swap;
+		src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+	}
+
+	@font-face {
+		font-family: 'Tomorrow';
+		font-style: normal;
+		font-weight: bold;
+		font-display: swap;
+		src: url('/fonts/Tomorrow-Bold.woff2') format('woff2');
+	}
+
 	* {
 		margin: 0;
 		padding: 0;
@@ -105,7 +131,7 @@ const lang = getLangFromUrl(Astro.url);
 	h4,
 	h5,
 	h6 {
-		font-family: 'Tomorrow', serif;
+		font-family: 'Tomorrow', sans-serif;
 		font-weight: bold;
 	}
 
