@@ -1,5 +1,5 @@
 import '@/styles/defDisplay.css';
-import DefSearcher from './DefSearcher.jsx';
+import DefSearcher from '@/components/views/DefSearcher';
 import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
 import { Tag } from 'lucide-react';
@@ -13,21 +13,32 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	const [allTags, setAllTags] = useState([]);
 	const [activeTag, setActiveTag] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [selectedFilter, setSelectedFilter] = useState('name');
+	const [selectedFilter, setSelectedFilter] = useState('definition');
 	const [inputValue, setInputValue] = useState('');
 
 	const getAllDefinitions = async () => {
 		const response = await DefinitionService.getDefinitions(lang);
 		const foundData = await response.json();
 
-		setAllData(foundData);
-		setData(foundData);
-		setAllTags(await TagsService.getAllTags(foundData));
+		const grouped = await DefinitionService.groupData(foundData);
+
+		setAllData(grouped);
+		setData(grouped);
+		setAllTags(await TagsService.getAllTags(grouped));
 
 		setIsLoading(false);
 	};
 
 	const getDefinitionsData = async (callback, params) => {
+		const foundData = await callback(...params);
+
+		const grouped = await DefinitionService.groupData(foundData);
+
+		setData(grouped);
+		setIsLoading(false);
+	};
+
+	const getDefinitionsByLetter = async (callback, params) => {
 		const foundData = await callback(...params);
 
 		setData(foundData);
@@ -60,10 +71,13 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 					inputValue,
 				]);
 			} else if (selectedFilter === 'letter') {
-				getDefinitionsData(DefinitionService.getDefinitionsByLetter, [
-					allData,
-					inputValue.length > 1 ? inputValue[0] : inputValue,
-				]);
+				getDefinitionsByLetter(
+					DefinitionService.getDefinitionsByLetter,
+					[
+						allData,
+						inputValue.length > 1 ? inputValue[0] : inputValue,
+					]
+				);
 			} else if (selectedFilter === 'tag') {
 				getDefinitionsData(DefinitionService.getDefinitionsByTag, [
 					allData,
@@ -144,23 +158,12 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 							))
 						) : data.length > 0 ? (
 							// If there is data
-							Object.keys(data[0]).includes('letter') ? (
-								// DefinitionGroup[]
-								data.map((defGroup) => (
-									<DefinitionGroup
-										key={defGroup.letter}
-										defGroup={defGroup}
-									/>
-								))
-							) : (
-								// Definition[]
-								data.map((def, index) => (
-									<Definition
-										key={`${def.name}-${index}`}
-										def={def}
-									/>
-								))
-							)
+							data.map((defGroup) => (
+								<DefinitionGroup
+									key={defGroup.letter}
+									defGroup={defGroup}
+								/>
+							))
 						) : (
 							// If no data is found
 							<p>{i18n.SEARCH.DISPLAY.NOT_FOUND}</p>
