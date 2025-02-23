@@ -28,8 +28,8 @@
 			"FILTER_2": "Por palabra",
 			"FILTER_3": "Por primera letra",
 			"FILTER_4": "Por etiqueta",
-			"INPUT_PLACEHOLDER": "Placaje",
-			"INPUT_PLACEHOLDER_LETTER": "A",
+			"INPUT_PLACEHOLDER": "atacante",
+			"INPUT_PLACEHOLDER_LETTER": "a",
 			"WARNING_MSG": "Solo se busca la primera letra"
 		}
 	},

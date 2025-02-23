@@ -28,8 +28,8 @@
 			"FILTER_2": "By word",
 			"FILTER_3": "By first letter",
 			"FILTER_4": "By tag",
-			"INPUT_PLACEHOLDER": "Tackle",
-			"INPUT_PLACEHOLDER_LETTER": "A",
+			"INPUT_PLACEHOLDER": "attack",
+			"INPUT_PLACEHOLDER_LETTER": "a",
 			"WARNING_MSG": "Only the first letter is sought"
 		}
 	},
