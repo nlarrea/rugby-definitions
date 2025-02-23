@@ -25,10 +25,15 @@ const getDefinitionsByTag = async (allDefinitions, tag) => {
 };
 
 const getDefinitionsByWord = async (allDefinitions, word) => {
+	const lowWord = word.toLowerCase();
 	let definitions = [];
+
 	allDefinitions.forEach((defGroup) => {
 		defGroup.definitions.forEach((def) => {
-			if (def.definition.toLowerCase().includes(word.toLowerCase())) {
+			if (
+				def.definition.toLowerCase().includes(lowWord) ||
+				def.name.toLowerCase().includes(lowWord)
+			) {
 				definitions.push(def);
 			}
 		});
