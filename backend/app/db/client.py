@@ -6,6 +6,6 @@ load_dotenv()
 
 DB_URI = os.getenv("DB_URI")
 
-db_client = MongoClient(
-    DB_URI, server_api=server_api.ServerApi("1")
-).definitions
+db_client = MongoClient(DB_URI, server_api=server_api.ServerApi("1"))[
+    "definitions-v2"
+]

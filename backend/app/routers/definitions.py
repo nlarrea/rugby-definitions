@@ -1,183 +1,15 @@
 from fastapi import APIRouter, status, HTTPException
 
-from db.schemas.definition import definition_schema, definitions_schema
-from db.schemas.definition_group import (
-    definition_group_schema,
-    definition_groups_schema,
-)
+from db.schemas.definition import definitions_schema
 from db.client import db_client
-from db.models.definition import DefinitionGroup, Definition
+from db.models.definition import Definition
+from db.modules.definitions import (
+    search_definitions_by_field,
+    search_definitions_with_value,
+)
 
 
 router = APIRouter(prefix="/definitions", tags=["Definitions"])
-
-
-def search_definition_group_by_field(
-    key: str, value, lang: str = "es"
-) -> DefinitionGroup | dict:
-    """Gets a key and a value and tries to find one definition group whose key
-    "key" has the value "value".
-
-    Parameters
-    ----------
-    key : str
-        The name of the field that is going to be used to filter definition
-        groups.
-    value : Any
-        The value to find in the specified key-field.
-    lang : str, optional
-        The language of the definitions to find, by default "es" (Spanish).
-
-    Returns
-    -------
-    DefinitionGroup | dict
-        The DefinitionGroup that matches the condition. Otherwise, an empty
-        dictionary.
-    """
-
-    try:
-        def_group = db_client[lang].find_one({key: value})
-        return DefinitionGroup(**definition_group_schema(def_group))
-
-    except:
-        return {}  # Not found
-
-
-def search_definition_by_field(
-    key: str, value, lang: str = "es"
-) -> Definition | dict:
-    """Search a single definition by the received "key" field.
-
-    Parameters
-    ----------
-    key : str
-        The name of the field in which the search is going to be made.
-    value : Any
-        The value that has to be found in the "key" field.
-    lang : str, optional
-        The language in which the search is going to be made, by default "es".
-
-    Returns
-    -------
-    Definition | dict
-        A single definition if any is found, otherwise an empty dictionary.
-    """
-
-    try:
-        definition = db_client[lang].find_one(
-            {
-                "$or": [
-                    {key: value.lower()},
-                    {key: value.upper()},
-                    {key: value.capitalize()},
-                ]
-            },
-            {"definitions.$": 1, "_id": 0},
-        )
-        return Definition(**definition_schema(definition))
-
-    except:
-        return {}  # Not found
-
-
-def search_definitions_by_field(
-    key: str, value, lang: str = "es"
-) -> list[Definition]:
-    """Searches multiple definitions by the "key" field.
-
-    Parameters
-    ----------
-    key : str
-        The name of the field in which the value must be found.
-    value : Any
-        The value to be found.
-    lang : str, optional
-        The language in which the definition should be found, by default "es".
-
-    Returns
-    -------
-    list[Definition]
-        A list of definitions that matches the criteria. If no definitions are
-        found it returns an empty list.
-    """
-
-    try:
-        definitions = list(
-            db_client[lang].aggregate(
-                [
-                    # Decompose "definitions" array in individual elements
-                    {"$unwind": "$definitions"},
-                    # Filter "key" field (inside "definitions") by regex
-                    {
-                        "$match": {
-                            key: {
-                                "$regex": value,
-                                "$options": "i",  # no case-sensitivity
-                            }
-                        }
-                    },
-                    # Select only "definitions.name" and
-                    # "definitions.definition" fields and exclude "_id"
-                    {
-                        "$project": {
-                            "_id": 0,
-                            "definitions.name": 1,
-                            "definitions.definition": 1,
-                            "definitions.tags": 1,
-                        }
-                    },
-                ]
-            )
-        )
-
-        found_defs = definitions_schema(definitions)
-        return [Definition(**def_) for def_ in found_defs]
-
-    except:
-        return []  # Not found
-
-
-def search_definitions_by_tag(tag: str, lang: str = "es") -> list[Definition]:
-    """Gets a tag value and returns all the definitions that contain that
-    specific tag value.
-
-    Parameters
-    ----------
-    tag : str
-        The tag value that has to be found.
-    lang : str, optional
-        The language in which the definitions are going to be returned, by
-        default "es".
-
-    Returns
-    -------
-    list[Definition]
-        A list of definitions that contain the requested tag.
-    """
-
-    try:
-        definitions = list(
-            db_client[lang].aggregate(
-                [
-                    {"$unwind": "$definitions"},
-                    {"$match": {"definitions.tags": tag.lower()}},
-                    {
-                        "$project": {
-                            "_id": 0,
-                            "definitions.name": 1,
-                            "definitions.definition": 1,
-                            "definitions.tags": 1,
-                        }
-                    },
-                ]
-            )
-        )
-
-        found_defs = definitions_schema(definitions)
-        return [Definition(**def_) for def_ in found_defs]
-
-    except:
-        return []
 
 
 @router.get("/", response_model=list[dict])
@@ -197,11 +29,13 @@ async def get_definitions(lang: str = "es"):
         definitions grouped by their first name character.
     """
 
-    definitions = db_client[lang].find().sort({"letter": 1}).to_list(None)
-    return definition_groups_schema(definitions)
+    definitions = (
+        db_client[lang].find().sort({"letter": 1, "name": 1}).to_list(None)
+    )
+    return definitions_schema(definitions)
 
 
-@router.get("/letter/{letter}", response_model=DefinitionGroup | dict)
+@router.get("/letter/{letter}", response_model=list[Definition] | list[dict])
 async def get_definitions_by_letter(letter: str, lang: str = "es"):
     """Gets a letter and returns the DefinitionGroup of that specific letter.
 
@@ -215,8 +49,8 @@ async def get_definitions_by_letter(letter: str, lang: str = "es"):
 
     Returns
     -------
-    DefinitionGroup | dict
-        DefinitionGroup if there are definitions grouped by the requested
+    list[Definition] | list[dict]
+        List of Definition if there are definitions grouped by the requested
         letter, otherwise an empty dictionary.
 
     Raises
@@ -226,7 +60,7 @@ async def get_definitions_by_letter(letter: str, lang: str = "es"):
         letter.
     """
 
-    def_group = search_definition_group_by_field("letter", letter, lang=lang)
+    def_group = search_definitions_by_field("letter", letter, lang=lang)
 
     if def_group:
         return def_group
@@ -263,7 +97,7 @@ async def get_definitions_by_tag(tag: str, lang: str = "es"):
         If no definitions are found, it raises a 404 error.
     """
 
-    definitions = search_definitions_by_tag(tag, lang)
+    definitions = search_definitions_by_field("tags", tag, lang)
 
     if definitions:
         return definitions
@@ -290,9 +124,7 @@ async def search_definitions(word: str, lang: str = "es"):
         default "es" (Spanish).
     """
 
-    definitions = search_definitions_by_field(
-        "definitions.definition", word, lang
-    )
+    definitions = search_definitions_with_value(word, lang)
 
     if definitions:
         return definitions
@@ -325,7 +157,8 @@ async def get_definitions_by_name(name: str, lang: str = "es"):
         definitions are found, returns an empty list.
     """
 
-    definitions = search_definitions_by_field("definitions.name", name, lang)
+    # definitions = search_definitions_by_field("definitions.name", name, lang)
+    definitions = search_definitions_by_field("name", name, lang)
 
     if definitions:
         return definitions

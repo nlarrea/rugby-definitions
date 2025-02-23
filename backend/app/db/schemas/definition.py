@@ -1,16 +1,18 @@
 def definition_schema(definition) -> dict:
     if type(definition) == list:
         return {
-            "name": definition["definitions"][0]["name"],
-            "definition": definition["definitions"][0]["definition"],
-            "tags": definition["definitions"][0]["tags"],
+            "name": definition[0]["name"],
+            "definition": definition[0]["definition"],
+            "letter": definition[0]["letter"],
+            "tags": definition[0]["tags"],
         }
 
     else:
         return {
-            "name": definition["definitions"]["name"],
-            "definition": definition["definitions"]["definition"],
-            "tags": definition["definitions"]["tags"],
+            "name": definition["name"],
+            "definition": definition["definition"],
+            "letter": definition["letter"],
+            "tags": definition["tags"],
         }
 
 
