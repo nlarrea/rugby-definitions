@@ -37,7 +37,7 @@ async def get_definitions(lang: str = "es"):
 
 @router.get("/letter/{letter}", response_model=list[Definition] | list[dict])
 async def get_definitions_by_letter(letter: str, lang: str = "es"):
-    """Gets a letter and returns the DefinitionGroup of that specific letter.
+    """Gets a letter and returns the Definitions of that specific letter.
 
     Parameters
     ----------
