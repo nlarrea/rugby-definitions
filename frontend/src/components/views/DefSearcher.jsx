@@ -13,7 +13,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 				<select
 					id='filters'
 					name='filter'
-					defaultValue='name'
+					defaultValue='definition'
 					onChange={filter.handleChangeFilter}
 					aria-label='filters'
 				>
