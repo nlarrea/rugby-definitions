@@ -3,6 +3,7 @@ import DefSearcher from '@/components/views/DefSearcher';
 import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
 import { Tag } from 'lucide-react';
+import { searchType } from '@/constants/inputs';
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -13,7 +14,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	const [allTags, setAllTags] = useState([]);
 	const [activeTag, setActiveTag] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [selectedFilter, setSelectedFilter] = useState('definition');
+	const [selectedFilter, setSelectedFilter] = useState(searchType.word);
 	const [inputValue, setInputValue] = useState('');
 
 	const getAllDefinitions = async () => {
@@ -60,17 +61,17 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 		if (isRendered.current) {
 			setIsLoading(true);
 
-			if (selectedFilter === 'name') {
+			if (selectedFilter === searchType.name) {
 				getDefinitionsData(DefinitionService.getDefinitionsByName, [
 					allData,
 					inputValue,
 				]);
-			} else if (selectedFilter === 'definition') {
+			} else if (selectedFilter === searchType.word) {
 				getDefinitionsData(DefinitionService.getDefinitionsByWord, [
 					allData,
 					inputValue,
 				]);
-			} else if (selectedFilter === 'letter') {
+			} else if (selectedFilter === searchType.letter) {
 				getDefinitionsByLetter(
 					DefinitionService.getDefinitionsByLetter,
 					[
@@ -78,7 +79,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 						inputValue.length > 1 ? inputValue[0] : inputValue,
 					]
 				);
-			} else if (selectedFilter === 'tag') {
+			} else if (selectedFilter === searchType.tag) {
 				getDefinitionsData(DefinitionService.getDefinitionsByTag, [
 					allData,
 					activeTag,
@@ -95,13 +96,17 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 		/* Reset input value when switching to tag-filter and reset active tag
 		when using input-like-filter */
 		if (
-			['name', 'definition', 'letter'].includes(selectedFilter) &&
-			event.target.value === 'tag'
+			[searchType.name, searchType.word, searchType.letter].includes(
+				selectedFilter
+			) &&
+			event.target.value === searchType.tag
 		) {
 			setInputValue('');
 		} else if (
-			selectedFilter === 'tag' &&
-			['name', 'definition', 'letter'].includes(event.target.value)
+			selectedFilter === searchType.tag &&
+			[searchType.name, searchType.word, searchType.letter].includes(
+				event.target.value
+			)
 		) {
 			setActiveTag('');
 		}

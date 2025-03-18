@@ -1,3 +1,4 @@
+import { searchType } from '@/constants/inputs';
 import '@/styles/defSearcher.css';
 import { Tag, TriangleAlert } from 'lucide-react';
 
@@ -17,15 +18,21 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 					onChange={filter.handleChangeFilter}
 					aria-label='filters'
 				>
-					<option value='name'>{i18n.SEARCH.FORM.FILTER_1}</option>
-					<option value='definition'>
+					<option value={searchType.name}>
+						{i18n.SEARCH.FORM.FILTER_1}
+					</option>
+					<option value={searchType.word}>
 						{i18n.SEARCH.FORM.FILTER_2}
 					</option>
-					<option value='letter'>{i18n.SEARCH.FORM.FILTER_3}</option>
-					<option value='tag'>{i18n.SEARCH.FORM.FILTER_4}</option>
+					<option value={searchType.letter}>
+						{i18n.SEARCH.FORM.FILTER_3}
+					</option>
+					<option value={searchType.tag}>
+						{i18n.SEARCH.FORM.FILTER_4}
+					</option>
 				</select>
 
-				{tags.tags && filter.selectedFilter === 'tag' ? (
+				{tags.tags && filter.selectedFilter === searchType.tag ? (
 					<section id='definition-tags-wrapper'>
 						{tags.tags.map((tag) => (
 							<button
@@ -50,14 +57,14 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 							name='search-input'
 							id='search-input'
 							className={
-								filter.selectedFilter === 'letter' &&
+								filter.selectedFilter === searchType.letter &&
 								input.inputValue.length > 1
 									? 'warning'
 									: ''
 							}
 							spellCheck='false'
 							placeholder={
-								filter.selectedFilter === 'letter'
+								filter.selectedFilter === searchType.letter
 									? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
 									: i18n.SEARCH.FORM.INPUT_PLACEHOLDER
 							}
@@ -66,7 +73,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 							}
 							value={input.inputValue}
 						/>
-						{filter.selectedFilter === 'letter' &&
+						{filter.selectedFilter === searchType.letter &&
 							input.inputValue.length > 1 && (
 								<span>
 									<TriangleAlert />
