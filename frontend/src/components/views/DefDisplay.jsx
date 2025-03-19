@@ -1,86 +1,22 @@
 import '@/styles/defDisplay.css';
 import DefSearcher from '@/components/views/DefSearcher';
-import DefinitionService from '@/services/definitions';
-import TagsService from '@/services/tags.js';
-import LetterService from '@/services/letters';
 import { Tag } from 'lucide-react';
 import { searchType } from '@/constants/inputs';
+import { useDefinitions } from '@/hooks/useDefinitions';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 const DefDisplay = ({ lang, i18n, loader }) => {
-	const isRendered = useRef(false);
-	const [allData, setAllData] = useState([]); // All the definitions
-	const [data, setData] = useState([]); // Definitions to be displayed
-	const [allTags, setAllTags] = useState([]);
-	const [allLetters, setAllLetters] = useState([]);
 	const [filters, setFilters] = useState({
 		inputValue: '',
 		selectedFilter: searchType.word,
 		activeTag: '',
 	});
-	const [isLoading, setIsLoading] = useState(true);
-
 	const { inputValue, selectedFilter, activeTag } = filters;
-
-	const getAllDefinitions = async () => {
-		const response = await DefinitionService.getDefinitions(lang);
-		const foundData = await response.json();
-		const grouped = await DefinitionService.groupData(foundData);
-
-		setAllData(grouped);
-		setData(grouped);
-		setAllTags(await TagsService.getAllTags(grouped));
-		setAllLetters(await LetterService.getAllLetters(grouped));
-		setIsLoading(false);
-	};
-
-	const getFilteredDefinitions = async () => {
-		let result = [];
-
-		if (selectedFilter === searchType.name) {
-			result = await DefinitionService.getDefinitionsByName(
-				allData,
-				inputValue
-			);
-		} else if (selectedFilter === searchType.word) {
-			result = await DefinitionService.getDefinitionsByWord(
-				allData,
-				inputValue
-			);
-		} else if (selectedFilter === searchType.letter) {
-			result = await DefinitionService.getDefinitionsByLetter(
-				allData,
-				inputValue
-			);
-		} else if (selectedFilter === searchType.tag) {
-			result = await DefinitionService.getDefinitionsByTag(
-				allData,
-				activeTag
-			);
-		}
-
-		const grouped =
-			selectedFilter === searchType.letter
-				? result
-				: await DefinitionService.groupData(result);
-
-		setData(grouped);
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		getAllDefinitions();
-	}, []);
-
-	useEffect(() => {
-		if (isRendered.current) {
-			setIsLoading(true);
-			getFilteredDefinitions();
-		} else {
-			isRendered.current = true;
-		}
-	}, [selectedFilter, inputValue, activeTag]);
+	const { data, isLoading, allTags, allLetters } = useDefinitions(
+		lang,
+		filters
+	);
 
 	const handleChangeFilter = (event) => {
 		const value = event.target.value;

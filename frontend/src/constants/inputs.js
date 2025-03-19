@@ -4,3 +4,5 @@ export const searchType = {
 	letter: 'letter',
 	tag: 'tag',
 };
+
+export const allOptions = '-';

@@ -1,4 +1,4 @@
-import { searchType } from '@/constants/inputs';
+import { allOptions, searchType } from '@/constants/inputs';
 import '@/styles/defSearcher.css';
 import { Tag } from 'lucide-react';
 
@@ -34,6 +34,7 @@ const FilterInput = ({ filter, tags, i18n, input, letters }) => {
 					id='search-input'
 					onChange={(e) => input.setInputValue(e.target.value)}
 				>
+					<option value={allOptions}>{allOptions}</option>
 					{letters.map((letter) => (
 						<option
 							value={letter}
