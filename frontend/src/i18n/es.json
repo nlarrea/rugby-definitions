@@ -33,6 +33,18 @@
 			"WARNING_MSG": "Solo se busca la primera letra"
 		}
 	},
+	"ABOUT": {
+		"TITLE": "¿Buscas más contenido?",
+		"BENTO": {
+			"COURSES": "Cursos",
+			"LAWS": "Leyes",
+			"VARIATIONS": "Variaciones",
+			"DEFINITIONS": "Definiciones",
+			"SIGNALS": "Señales",
+			"CLARIFICATIONS": "Aclaraciones",
+			"NEWS": "Novedades"
+		}
+	},
 	"FOOTER": {
 		"TITLE": "Ponte en contacto",
 		"COPYRIGHT": "2025-presente Definiciones de Rugby. Todos los Derechos Reservados."

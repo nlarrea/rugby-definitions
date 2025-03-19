@@ -33,6 +33,18 @@
 			"WARNING_MSG": "Only the first letter is sought"
 		}
 	},
+	"ABOUT": {
+		"TITLE": "Do you want more?",
+		"BENTO": {
+			"COURSES": "Courses",
+			"LAWS": "Laws",
+			"VARIATIONS": "Variations",
+			"DEFINITIONS": "Definitions",
+			"SIGNALS": "Signals",
+			"CLARIFICATIONS": "Clarifications",
+			"NEWS": "News"
+		}
+	},
 	"FOOTER": {
 		"TITLE": "Get in touch",
 		"COPYRIGHT": "2025-present Rugby Definitions. All Rights Reserved."

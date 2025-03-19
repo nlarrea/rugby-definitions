@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getI18N } from '@/i18n';
+import { bentoItems } from '@/constants/data';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
@@ -10,5 +11,156 @@ const i18n = getI18N({ currentLocale });
 	title={`${i18n.SEO.TITLE_ABOUT}`}
 	description={i18n.SEO.DESCRIPTION_ABOUT}
 >
-	{i18n.SOON}
+	<header>
+		<h1>{i18n.ABOUT.TITLE}</h1>
+	</header>
+	<!-- TODO: estilar el bento
+	 - modificar imágenes -> encontrar otras muy parecidas de mejor calidad
+	 - modificar spans -> que se lean mejor
+	 - añadir una animación más chula para el texto al hacer hover 
+	-->
+
+	<section class='bento-grid'>
+		<a
+			href={bentoItems.courses.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.COURSES}
+			style=`background-image: url(${bentoItems.courses.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.COURSES}</span>
+		</a>
+
+		<a
+			href={bentoItems.laws.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.LAWS}
+			style=`background-image: url(${bentoItems.laws.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.LAWS}</span>
+		</a>
+
+		<a
+			href={bentoItems.variations.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.VARIATIONS}
+			style=`background-image: url(${bentoItems.variations.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.VARIATIONS}</span>
+		</a>
+
+		<a
+			href={bentoItems.definitions.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.DEFINITIONS}
+			style=`background-image: url(${bentoItems.definitions.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.DEFINITIONS}</span>
+		</a>
+
+		<a
+			href={bentoItems.signals.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.SIGNALS}
+			style=`background-image: url(${bentoItems.signals.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.SIGNALS}</span>
+		</a>
+
+		<a
+			href={bentoItems.clarifications.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.CLARIFICATIONS}
+			style=`background-image: url(${bentoItems.clarifications.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.CLARIFICATIONS}</span>
+		</a>
+
+		<a
+			href={bentoItems.news.link}
+			target='_blank'
+			rel='noreferrer'
+			class='bento-item'
+			aria-label={i18n.ABOUT.BENTO.NEWS}
+			style=`background-image: url(${bentoItems.news.image});`
+		>
+			<span>{i18n.ABOUT.BENTO.NEWS}</span>
+		</a>
+	</section>
 </Layout>
+
+<style>
+	header {
+		padding: 4em 0 2em;
+	}
+
+	.bento-grid {
+		width: min(100%, var(--app-max-width));
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(5, 150px);
+		grid-template-areas:
+			'item1 item1 item1 item2 item2'
+			'item1 item1 item1 item2 item2'
+			'item3 item3 item4 item5 item5'
+			'item3 item3 item7 item5 item5'
+			'item6 item6 item7 item5 item5';
+		gap: 8px;
+	}
+
+	.bento-item:nth-child(1) {
+		grid-area: item1;
+	}
+	.bento-item:nth-child(2) {
+		grid-area: item2;
+	}
+	.bento-item:nth-child(3) {
+		grid-area: item3;
+	}
+	.bento-item:nth-child(4) {
+		grid-area: item4;
+	}
+	.bento-item:nth-child(5) {
+		grid-area: item5;
+	}
+	.bento-item:nth-child(6) {
+		grid-area: item6;
+	}
+	.bento-item:nth-child(7) {
+		grid-area: item7;
+	}
+
+	.bento-item {
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+
+		border-radius: 4px;
+
+		position: relative;
+		transform: scale(1);
+		transition: transform 0.3s;
+
+		span {
+			position: absolute;
+			bottom: 8px;
+			left: 8px;
+		}
+
+		&:hover,
+		&:focus {
+			transform: scale(1.025);
+		}
+	}
+</style>
