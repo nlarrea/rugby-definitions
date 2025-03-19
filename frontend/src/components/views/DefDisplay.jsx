@@ -14,122 +14,108 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	const [data, setData] = useState([]); // Definitions to be displayed
 	const [allTags, setAllTags] = useState([]);
 	const [allLetters, setAllLetters] = useState([]);
-	const [activeTag, setActiveTag] = useState('');
+	const [filters, setFilters] = useState({
+		inputValue: '',
+		selectedFilter: searchType.word,
+		activeTag: '',
+	});
 	const [isLoading, setIsLoading] = useState(true);
-	const [selectedFilter, setSelectedFilter] = useState(searchType.word);
-	const [inputValue, setInputValue] = useState('');
+
+	const { inputValue, selectedFilter, activeTag } = filters;
 
 	const getAllDefinitions = async () => {
 		const response = await DefinitionService.getDefinitions(lang);
 		const foundData = await response.json();
-
 		const grouped = await DefinitionService.groupData(foundData);
 
 		setAllData(grouped);
 		setData(grouped);
 		setAllTags(await TagsService.getAllTags(grouped));
 		setAllLetters(await LetterService.getAllLetters(grouped));
-
 		setIsLoading(false);
 	};
 
-	const getDefinitionsData = async (callback, params) => {
-		const foundData = await callback(...params);
+	const getFilteredDefinitions = async () => {
+		let result = [];
 
-		const grouped = await DefinitionService.groupData(foundData);
+		if (selectedFilter === searchType.name) {
+			result = await DefinitionService.getDefinitionsByName(
+				allData,
+				inputValue
+			);
+		} else if (selectedFilter === searchType.word) {
+			result = await DefinitionService.getDefinitionsByWord(
+				allData,
+				inputValue
+			);
+		} else if (selectedFilter === searchType.letter) {
+			result = await DefinitionService.getDefinitionsByLetter(
+				allData,
+				inputValue
+			);
+		} else if (selectedFilter === searchType.tag) {
+			result = await DefinitionService.getDefinitionsByTag(
+				allData,
+				activeTag
+			);
+		}
+
+		const grouped =
+			selectedFilter === searchType.letter
+				? result
+				: await DefinitionService.groupData(result);
 
 		setData(grouped);
 		setIsLoading(false);
 	};
 
-	const getDefinitionsByLetter = async (callback, params) => {
-		const foundData = await callback(...params);
-
-		setData(foundData);
-		setIsLoading(false);
-	};
-
-	/**
-	 * Call the API when the page is opened.
-	 */
 	useEffect(() => {
-		setIsLoading(true);
 		getAllDefinitions();
 	}, []);
 
-	/**
-	 * Call the API again when one of the input values changes.
-	 */
 	useEffect(() => {
 		if (isRendered.current) {
 			setIsLoading(true);
-
-			if (selectedFilter === searchType.name) {
-				getDefinitionsData(DefinitionService.getDefinitionsByName, [
-					allData,
-					inputValue,
-				]);
-			} else if (selectedFilter === searchType.word) {
-				getDefinitionsData(DefinitionService.getDefinitionsByWord, [
-					allData,
-					inputValue,
-				]);
-			} else if (selectedFilter === searchType.letter) {
-				getDefinitionsByLetter(
-					DefinitionService.getDefinitionsByLetter,
-					[allData, inputValue]
-				);
-			} else if (selectedFilter === searchType.tag) {
-				getDefinitionsData(DefinitionService.getDefinitionsByTag, [
-					allData,
-					activeTag,
-				]);
-			}
+			getFilteredDefinitions();
+		} else {
+			isRendered.current = true;
 		}
-
-		isRendered.current = true;
 	}, [selectedFilter, inputValue, activeTag]);
 
 	const handleChangeFilter = (event) => {
-		event.preventDefault();
+		const value = event.target.value;
 
-		/* Reset input value when switching to tag-filter and reset active tag
-		when using input-like-filter */
-		if (
-			[searchType.name, searchType.word, searchType.letter].includes(
-				selectedFilter
-			) &&
-			event.target.value === searchType.tag
-		) {
-			setInputValue('');
-		} else if (
-			selectedFilter === searchType.tag &&
-			[searchType.name, searchType.word, searchType.letter].includes(
-				event.target.value
-			)
-		) {
-			setActiveTag('');
-		}
-
-		// Update selected filter
-		setSelectedFilter(event.target.value);
+		setFilters((prev) => ({
+			...prev,
+			selectedFilter: value,
+			inputValue: [
+				searchType.name,
+				searchType.word,
+				searchType.letter,
+			].includes(value)
+				? ''
+				: prev.inputValue,
+			activeTag: value === searchType.tag ? prev.activeTag : '',
+		}));
 	};
 
 	const handleChangeTag = (event) => {
 		const selectedTag = event.target.innerText;
-
-		if (activeTag === selectedTag) {
-			setActiveTag('');
-		} else {
-			setActiveTag(selectedTag);
-		}
+		setFilters((prev) => ({
+			...prev,
+			activeTag: prev.activeTag === selectedTag ? '' : selectedTag,
+		}));
 	};
 
 	return (
 		<article id='definitions-display-container'>
 			<DefSearcher
 				i18n={i18n}
-				input={{ inputValue, setInputValue }}
+				input={{
+					inputValue,
+					setInputValue: (val) =>
+						setFilters((prev) => ({ ...prev, inputValue: val })),
+				}}
 				filter={{ selectedFilter, handleChangeFilter }}
 				tags={{ tags: allTags, activeTag, handleChangeTag }}
 				letters={allLetters}
@@ -145,7 +131,6 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 						fill='currentColor'
 						fillOpacity='1'
 						d='M0,96L48,80C96,64,192,32,288,26.7C384,21,480,43,576,48C672,53,768,43,864,58.7C960,75,1056,117,1152,154.7C1248,192,1344,224,1392,240L1440,256L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'
-						data-darkreader-inline-fill=''
 					></path>
 				</svg>
 
@@ -155,15 +140,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 					</span>
 				) : (
 					<div id='definitions-wrapper'>
-						{inputValue === '' && activeTag === '' ? (
-							allData.map((defGroup) => (
-								<DefinitionGroup
-									key={defGroup.letter}
-									defGroup={defGroup}
-								/>
-							))
-						) : data.length > 0 ? (
-							// If there is data
+						{data.length > 0 ? (
 							data.map((defGroup) => (
 								<DefinitionGroup
 									key={defGroup.letter}
@@ -171,7 +148,6 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 								/>
 							))
 						) : (
-							// If no data is found
 							<p>{i18n.SEARCH.DISPLAY.NOT_FOUND}</p>
 						)}
 					</div>
@@ -181,40 +157,36 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	);
 };
 
-const Definition = ({ def }) => {
-	return (
-		<article className='definition'>
-			<header>
-				<h3>{def?.name}</h3>
-				<div>
-					{def?.tags?.map((tag, index) => (
-						<span
-							key={`${tag}-${index}`}
-							className='definition-tag'
-						>
-							<Tag />
-							{tag}
-						</span>
-					))}
-				</div>
-			</header>
-			<p>{def.definition}</p>
-		</article>
-	);
-};
+const Definition = ({ def }) => (
+	<article className='definition'>
+		<header>
+			<h3>{def?.name}</h3>
+			<div>
+				{def?.tags?.map((tag, index) => (
+					<span
+						key={`${tag}-${index}`}
+						className='definition-tag'
+					>
+						<Tag />
+						{tag}
+					</span>
+				))}
+			</div>
+		</header>
+		<p>{def.definition}</p>
+	</article>
+);
 
-const DefinitionGroup = ({ defGroup }) => {
-	return (
-		<section className='definition-group'>
-			<h2 id={defGroup.letter}>{defGroup.letter}</h2>
-			{defGroup.definitions.map((def, index) => (
-				<Definition
-					key={`${def.name}-${index}`}
-					def={def}
-				/>
-			))}
-		</section>
-	);
-};
+const DefinitionGroup = ({ defGroup }) => (
+	<section className='definition-group'>
+		<h2 id={defGroup.letter}>{defGroup.letter}</h2>
+		{defGroup.definitions.map((def, index) => (
+			<Definition
+				key={`${def.name}-${index}`}
+				def={def}
+			/>
+		))}
+	</section>
+);
 
 export default DefDisplay;
