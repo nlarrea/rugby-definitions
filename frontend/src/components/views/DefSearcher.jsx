@@ -1,8 +1,68 @@
 import { searchType } from '@/constants/inputs';
 import '@/styles/defSearcher.css';
-import { Tag, TriangleAlert } from 'lucide-react';
+import { Tag } from 'lucide-react';
 
-const DefSearcher = ({ input, i18n, tags, filter }) => {
+const FilterInput = ({ filter, tags, i18n, input, letters }) => {
+	if (tags.tags && filter.selectedFilter === searchType.tag) {
+		return (
+			<section id='definition-tags-wrapper'>
+				{tags.tags.map((tag) => (
+					<button
+						key={tag}
+						className={
+							tags.activeTag === tag
+								? 'definition-tag active-tag'
+								: 'definition-tag'
+						}
+						type='button'
+						onClick={tags.handleChangeTag}
+					>
+						<Tag />
+						{tag}
+					</button>
+				))}
+			</section>
+		);
+	} else if (
+		letters?.length > 0 &&
+		filter.selectedFilter === searchType.letter
+	) {
+		return (
+			<label htmlFor='search-input'>
+				<select
+					name='search-input'
+					id='search-input'
+					onChange={(e) => input.setInputValue(e.target.value)}
+				>
+					{letters.map((letter) => (
+						<option
+							value={letter}
+							key={letter}
+						>
+							{letter}
+						</option>
+					))}
+				</select>
+			</label>
+		);
+	} else {
+		return (
+			<label htmlFor='search-input'>
+				<input
+					type='text'
+					name='search-input'
+					id='search-input'
+					spellCheck='false'
+					placeholder={i18n.SEARCH.FORM.INPUT_PLACEHOLDER}
+					onChange={(e) => input.setInputValue(e.target.value)}
+					value={input.inputValue}
+				/>
+			</label>
+		);
+	}
+};
+
+const DefSearcher = ({ input, i18n, tags, filter, letters }) => {
 	return (
 		<form
 			name='definition-searcher'
@@ -32,56 +92,7 @@ const DefSearcher = ({ input, i18n, tags, filter }) => {
 					</option>
 				</select>
 
-				{tags.tags && filter.selectedFilter === searchType.tag ? (
-					<section id='definition-tags-wrapper'>
-						{tags.tags.map((tag) => (
-							<button
-								key={tag}
-								className={
-									tags.activeTag === tag
-										? 'definition-tag active-tag'
-										: 'definition-tag'
-								}
-								type='button'
-								onClick={tags.handleChangeTag}
-							>
-								<Tag />
-								{tag}
-							</button>
-						))}
-					</section>
-				) : (
-					<label htmlFor='search-input'>
-						<input
-							type='text'
-							name='search-input'
-							id='search-input'
-							className={
-								filter.selectedFilter === searchType.letter &&
-								input.inputValue.length > 1
-									? 'warning'
-									: ''
-							}
-							spellCheck='false'
-							placeholder={
-								filter.selectedFilter === searchType.letter
-									? i18n.SEARCH.FORM.INPUT_PLACEHOLDER_LETTER
-									: i18n.SEARCH.FORM.INPUT_PLACEHOLDER
-							}
-							onChange={(e) =>
-								input.setInputValue(e.target.value)
-							}
-							value={input.inputValue}
-						/>
-						{filter.selectedFilter === searchType.letter &&
-							input.inputValue.length > 1 && (
-								<span>
-									<TriangleAlert />
-									{i18n.SEARCH.FORM.WARNING_MSG}
-								</span>
-							)}
-					</label>
-				)}
+				{FilterInput({ input, i18n, tags, filter, letters })}
 			</main>
 		</form>
 	);

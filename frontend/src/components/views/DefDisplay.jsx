@@ -2,6 +2,7 @@ import '@/styles/defDisplay.css';
 import DefSearcher from '@/components/views/DefSearcher';
 import DefinitionService from '@/services/definitions';
 import TagsService from '@/services/tags.js';
+import LetterService from '@/services/letters';
 import { Tag } from 'lucide-react';
 import { searchType } from '@/constants/inputs';
 
@@ -12,6 +13,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 	const [allData, setAllData] = useState([]); // All the definitions
 	const [data, setData] = useState([]); // Definitions to be displayed
 	const [allTags, setAllTags] = useState([]);
+	const [allLetters, setAllLetters] = useState([]);
 	const [activeTag, setActiveTag] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedFilter, setSelectedFilter] = useState(searchType.word);
@@ -26,6 +28,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 		setAllData(grouped);
 		setData(grouped);
 		setAllTags(await TagsService.getAllTags(grouped));
+		setAllLetters(await LetterService.getAllLetters(grouped));
 
 		setIsLoading(false);
 	};
@@ -74,10 +77,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 			} else if (selectedFilter === searchType.letter) {
 				getDefinitionsByLetter(
 					DefinitionService.getDefinitionsByLetter,
-					[
-						allData,
-						inputValue.length > 1 ? inputValue[0] : inputValue,
-					]
+					[allData, inputValue]
 				);
 			} else if (selectedFilter === searchType.tag) {
 				getDefinitionsData(DefinitionService.getDefinitionsByTag, [
@@ -132,6 +132,7 @@ const DefDisplay = ({ lang, i18n, loader }) => {
 				input={{ inputValue, setInputValue }}
 				filter={{ selectedFilter, handleChangeFilter }}
 				tags={{ tags: allTags, activeTag, handleChangeTag }}
+				letters={allLetters}
 			/>
 
 			<main id='found-definitions-display'>

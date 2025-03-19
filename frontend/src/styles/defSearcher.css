@@ -10,12 +10,13 @@ form#definition-searcher {
 		display: flex;
 		gap: 1em;
 
-		label:has(input) {
+		label:has(input, select) {
 			flex: 1 1 auto;
 
 			position: relative;
 
-			input {
+			input,
+			select {
 				width: 100%;
 			}
 
@@ -70,16 +71,6 @@ form#definition-searcher {
 
 		select {
 			cursor: pointer;
-		}
-
-		label {
-			input[type='text'].warning {
-				border: 1px solid light-dark(#dc3545, #ffc107);
-			}
-
-			span {
-				color: light-dark(#dc3545, #ffc107);
-			}
 		}
 	}
 }
